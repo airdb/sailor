@@ -10,7 +10,7 @@ func SetResp(c *gin.Context, value interface{}) {
 	c.Set(ContextKeyResp, value)
 }
 
-func ToJSON(version string) gin.HandleFunc {
+func ToJSON(version string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Process request.
 		c.Next()
