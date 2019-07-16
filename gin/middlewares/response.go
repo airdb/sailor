@@ -1,6 +1,8 @@
 package middlewares
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -8,7 +10,7 @@ func SetResp(c *gin.Context, value interface{}) {
 	c.Set(ContextKeyResp, value)
 }
 
-func ToJSON() gin.HandleFunc {
+func ToJSON(version string) gin.HandleFunc {
 	return func(c *gin.Context) {
 		// Process request.
 		c.Next()
