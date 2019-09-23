@@ -1,5 +1,7 @@
 # sailor [![Build Status](https://travis-ci.org/airdb/sailor.svg?branch=master)](https://travis-ci.org/airdb/sailor) 
 
+![](https://github.com/airdb/sailor/workflows/Greet%20Everyone/badge.svg)
+
 Sailor is a Base Common Golang Lib.  
 
 auto ci
