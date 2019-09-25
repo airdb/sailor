@@ -19,8 +19,8 @@ jobs:
     - name: Lint
       run: |
         go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-        go env
-        golangci-lint run
+        ls ~/go/bin/
+        ~/go/bin/golangci-lint run
 
     - name: Test
       run: echo go test -v .
