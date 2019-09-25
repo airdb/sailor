@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/airdb/sailor/enum"
 	"github.com/spf13/viper"
 	"log"
 	"os"
@@ -33,12 +34,21 @@ type Database struct {
 	Name     string
 }
 
-func GetEnv() string {
-	if os.Getenv("ENV") == "" {
-		// default return dev
-		return "dev"
+func GetEnv() (env string) {
+	env = os.Getenv("ENV")
+	env = strings.ToUpper(env)
+	if env == "" {
+		env = enum.FromEnv(enum.EnvDev)
 	}
-	return os.Getenv("ENV")
+	return env
+}
+
+func GetPort() (port string) {
+	port = os.Getenv("PORT")
+	if port == "" {
+		port = "8081"
+	}
+	return
 }
 
 func GetDatabases() (databases map[string]*Database) {
@@ -60,7 +70,7 @@ func GetDatabases() (databases map[string]*Database) {
 	return databases
 }
 
-func init() {
+func Init() {
 	viper.AddConfigPath("conf")
 	viper.SetConfigName(GetEnv())
 

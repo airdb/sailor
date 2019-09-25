@@ -9,115 +9,9 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"syscall"
 	"time"
-
-	"github.com/airdb/sailor/check"
 )
 
-func WriteFile(filename string, content string) error {
-	f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		log.Printf("open file failed, filename: %s, err: %v\n", filename, err)
-	}
-
-	defer f.Close()
-
-	if _, err = f.WriteString(content); err != nil {
-		log.Printf("write file failed, filename: %s\n", filename)
-	} else {
-		log.Println("write file successfully, filename: ", filename)
-	}
-
-	return err
-}
-
-func WriteByteToFile(dst string, d []byte) error {
-	pdir, filename := filepath.Split(dst)
-
-	if !check.IsFileExists(pdir) {
-		err := os.MkdirAll(pdir, 0755)
-		if err != nil {
-			log.Printf("%s", err)
-		} else {
-			log.Println("Create Directory OK!")
-		}
-	}
-
-	log.Printf("WriteFile filename: %s,  Size of download: %d\n", filename, len(d))
-	err := ioutil.WriteFile(dst, d, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return err
-}
-
-func ChangMtime(filename string, mtime time.Time) error {
-	atime, _, _, err := StatTimes(filename)
-	if err != nil {
-		log.Println(err)
-		return err
-	}
-
-	err = os.Chtimes(filename, atime, mtime)
-	if err != nil {
-		log.Printf("filename: %s, change mtime to [%s] failed!  %v\n", filename, mtime, err)
-	} else {
-		log.Printf("filename: %s, change mtime to [%s] successfully!\n", filename, mtime)
-	}
-	return err
-}
-
-func CopyFileTime(srcfile, dstfile string) (err error) {
-	atime, mtime, _, err := StatTimes(srcfile)
-	if err != nil {
-		log.Println(err)
-		return err
-	}
-
-	err = os.Chtimes(dstfile, atime, mtime)
-	if err != nil {
-		log.Printf("filename: %s, change mtime to [%s] failed!  %v\n", dstfile, mtime, err)
-	} else {
-		log.Printf("filename: %s, change mtime to [%s] successfully!\n", dstfile, mtime)
-	}
-	return err
-}
-
-func ReadAll(filename string) string {
-	fi, err := os.Open(filename)
-	if err != nil {
-		panic(err)
-	}
-	defer fi.Close()
-	fd, _ := ioutil.ReadAll(fi)
-	// fmt.Println(string(fd))
-	return string(fd)
-}
-
-func StatTimes(name string) (atime, mtime, ctime time.Time, err error) {
-	fi, err := os.Stat(name)
-	if err != nil {
-		return
-	}
-	mtime = fi.ModTime()
-	stat := fi.Sys().(*syscall.Stat_t)
-	atime = time.Unix(int64(stat.Atim.Sec), int64(stat.Atim.Nsec))
-	ctime = time.Unix(int64(stat.Ctim.Sec), int64(stat.Ctim.Nsec))
-	return
-}
-
-/*
-func MTime(name string) (mtime string) {
-	fi, err := os.Stat(name)
-	if err != nil {
-		return
-	}
-	mtime = fi.ModTime().String()
-	// log.Println(mtime)
-	return
-}
-*/
 func MTime(name string) (mtime time.Time) {
 	fi, err := os.Stat(name)
 	if err != nil {
@@ -235,21 +129,3 @@ func ChopPath(original string) string {
 	}
 }
 
-// func GetPWD() (string, error) {
-// 	file, err := exec.LookPath(os.Args[0])
-// 	if err != nil {
-// 		return "", err
-// 	}
-// 	path, err := filepath.Abs(file)
-// 	if err != nil {
-// 		return "", err
-// 	}
-// 	i := strings.LastIndex(path, "/")
-// 	if i < 0 {
-// 		i = strings.LastIndex(path, "\\")
-// 	}
-// 	if i < 0 {
-// 		return "", errors.New(`error: Can't find "/" or "\".`)
-// 	}
-// 	return string(path[0 : i+1]), nil
-// }

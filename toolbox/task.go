@@ -15,6 +15,7 @@
 package toolbox
 
 import (
+	"fmt"
 	"log"
 	"math"
 	"sort"
@@ -425,7 +426,12 @@ func run() {
 				if e.GetNext() != effective {
 					break
 				}
-				go e.Run()
+				go func() {
+					err := e.Run()
+					if err != nil {
+						fmt.Print("run_err", err)
+					}
+				}()
 				e.SetPrev(e.GetNext())
 				e.SetNext(effective)
 			}
