@@ -1,4 +1,4 @@
-package sailor
+package arrayutil
 
 import (
 	"errors"
