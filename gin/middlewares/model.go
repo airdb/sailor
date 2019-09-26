@@ -16,3 +16,12 @@ type Response struct {
 	Error   interface{} `json:"error,omitempty"`
 	Result  interface{} `json:"result,omitempty"`
 }
+
+type Error struct {
+	StatusCode *int      `json:"-"`
+	Message    string    `json:"message"`
+	Type       ErrorType `json:"type"`
+	Traceback  string    `json:"traceback"`
+}
+
+type ErrorType string

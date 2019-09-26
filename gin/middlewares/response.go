@@ -10,7 +10,11 @@ func SetResp(c *gin.Context, value interface{}) {
 	c.Set(ContextKeyResp, value)
 }
 
-func ToJSON(version string) gin.HandlerFunc {
+func SetErr(c *gin.Context, err *Error) {
+	c.Set(ContextKeyErr, err)
+}
+
+func Jsonifier(version string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Process request.
 		c.Next()
