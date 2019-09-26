@@ -19,8 +19,6 @@ jobs:
     - name: Lint
       run: |
         go mod download
-        go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-        ~/go/bin/golangci-lint run
 
     - name: Test
       run: echo go test -v .
