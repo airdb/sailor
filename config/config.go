@@ -52,6 +52,7 @@ func GetPort() (port string) {
 }
 
 func GetDatabases() (databases map[string]*Database) {
+	Init()
 	err := viper.UnmarshalKey("databases", &databases)
 	if err != nil {
 		log.Fatal("could not parse config for databases")

@@ -18,7 +18,7 @@ const (
 	OperationRead  OperationType = 2
 )
 
-func init() {
+func InitDefault() {
 	databases := config.GetDatabases()
 	for name, item := range databases {
 		db, err := gorm.Open(
@@ -53,10 +53,15 @@ func ReadDB(name string) *gorm.DB {
 }
 
 func DB(name string, typ OperationType) (db *gorm.DB) {
+	InitDefault()
 
-	nameWithOperation := fmt.Sprintf("%v.read", name)
-	if typ == OperationWrite {
+	var nameWithOperation string
+
+	switch typ {
+	case OperationWrite:
 		nameWithOperation = fmt.Sprintf("%v.write", name)
+	case OperationRead:
+		nameWithOperation = fmt.Sprintf("%v.read", name)
 	}
 
 	if len(nameWithOperation) > 0 {
@@ -66,13 +71,15 @@ func DB(name string, typ OperationType) (db *gorm.DB) {
 		}
 	}
 
+	// Fallback to default db if could not find `nameWithOperation`.
 	_db, ok := dbs.Load(name)
 	if ok {
 		db = _db.(*gorm.DB)
 	}
 
-	// if db == nil {
-	// }
+	if db == nil {
+		fmt.Println("error: ", db)
+	}
 
 	return
 }
