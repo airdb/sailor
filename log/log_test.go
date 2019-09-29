@@ -6,6 +6,8 @@ import (
 )
 
 func TestLogger(t *testing.T) {
-	log.Logger().Println("hello")
+	log := log.NewLogger(10000)
+	log.SetLogger("console", "")
+	log.Info("info")
 	t.Log("hello")
 }
