@@ -48,7 +48,7 @@ func GetEnv() (env string) {
 func GetPort() (port string) {
 	port = os.Getenv("PORT")
 	if port == "" {
-		port = "8081"
+		port = "8080"
 	}
 	return
 }
