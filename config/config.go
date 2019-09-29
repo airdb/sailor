@@ -5,6 +5,8 @@ import (
 	"github.com/spf13/viper"
 	"log"
 	"os"
+	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -72,10 +74,14 @@ func GetDatabases() (databases map[string]*Database) {
 }
 
 func Init() {
-	viper.AddConfigPath("conf")
+	workDir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
+	}
+	viper.AddConfigPath(path.Join(workDir, "conf"))
 	viper.SetConfigName(GetEnv())
 
-	err := viper.ReadInConfig()
+	err = viper.ReadInConfig()
 	if err != nil {
 		panic(err)
 	}
