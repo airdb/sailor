@@ -38,10 +38,10 @@ type Database struct {
 
 func GetEnv() (env string) {
 	env = os.Getenv("ENV")
-	env = strings.ToUpper(env)
 	if env == "" {
 		env = enum.FromEnv(enum.EnvDev)
 	}
+	env = strings.ToUpper(env)
 	return env
 }
 
