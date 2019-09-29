@@ -41,7 +41,7 @@ func GetEnv() (env string) {
 	if env == "" {
 		env = enum.FromEnv(enum.EnvDev)
 	}
-	env = strings.ToUpper(env)
+	env = strings.ToLower(env)
 	return env
 }
 
