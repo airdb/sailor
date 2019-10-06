@@ -24,7 +24,7 @@ func InitDefault() {
 		db, err := gorm.Open(
 			"mysql",
 			fmt.Sprintf(
-				"%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Asia%%2FShanghai",
+				"%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 				item.User,
 				item.Password,
 				item.Address,
