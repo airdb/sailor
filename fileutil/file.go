@@ -128,4 +128,3 @@ func ChopPath(original string) string {
 		return original[i+1:]
 	}
 }
-

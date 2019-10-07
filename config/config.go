@@ -78,7 +78,11 @@ func Init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	viper.AddConfigPath(path.Join(workDir, "conf"))
+	if GetEnv() == "dev" {
+		viper.AddConfigPath("conf")
+	} else {
+		viper.AddConfigPath(path.Join(workDir, "conf"))
+	}
 	viper.SetConfigName(GetEnv())
 
 	err = viper.ReadInConfig()

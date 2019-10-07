@@ -31,7 +31,7 @@ func FromEnv(env Env) string {
 	}
 }
 
-func ToEnv(sEnv string) Env{
+func ToEnv(sEnv string) Env {
 	switch sEnv {
 	case "TEST":
 		return EnvTest
@@ -50,8 +50,8 @@ func ToEnv(sEnv string) Env{
 	}
 }
 
-func IsLiveEnv(sEnv string) bool{
-	return sEnv == FromEnv(EnvLive)	|| sEnv == FromEnv(EnvLivesh)
+func IsLiveEnv(sEnv string) bool {
+	return sEnv == FromEnv(EnvLive) || sEnv == FromEnv(EnvLivesh)
 }
 
 func GetEnvList() (envList []string) {
@@ -63,7 +63,7 @@ func GetEnvList() (envList []string) {
 		FromEnv(EnvUAT),
 		FromEnv(EnvLivesh),
 		FromEnv(EnvLive),
-		)
+	)
 	return
 }
 
