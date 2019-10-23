@@ -30,7 +30,7 @@ func Jsonifier(version string) gin.HandlerFunc {
 		value, exists := c.Get(ContextKeyResp)
 		if exists {
 			resp.Success = true
-			resp.Result = value
+			resp.Content = value
 			resp.Error = nil
 			shouldJsonify = true
 		}
