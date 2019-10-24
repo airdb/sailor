@@ -15,7 +15,7 @@ type Response struct {
 	Success bool        `json:"success"`
 	Content interface{} `json:"content"`
 	Error   interface{} `json:"error,omitempty"`
-	Message interface{} `json:"result,omitempty"`
+	Message interface{} `json:"message,omitempty"`
 }
 
 type Error struct {

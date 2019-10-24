@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetResp(c *gin.Context, code uint, value interface{}) {
+func SetResp(c *gin.Context, code int, value interface{}) {
 	c.Set("code", code)
 	c.Set(ContextKeyResp, value)
 }
@@ -23,6 +23,7 @@ func Jsonifier() gin.HandlerFunc {
 		statusCode := http.StatusOK
 
 		code := c.GetInt("code")
+		fmt.Println("xxxx", code)
 		// Jsonify the response.
 		value, exists := c.Get(ContextKeyResp)
 		if exists {
