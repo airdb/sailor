@@ -9,7 +9,9 @@ import (
 )
 
 func SetResp(c *gin.Context, code uint, value interface{}) {
-	c.Set("code", code)
+	c.Set(ContextCode, int(code))
+	fmt.Println("aaaa0000", code)
+	fmt.Println("=====")
 	c.Set(ContextKeyResp, value)
 }
 
@@ -23,7 +25,7 @@ func Jsonifier() gin.HandlerFunc {
 		shouldJsonify := false
 		statusCode := http.StatusOK
 
-		code := c.GetInt("code")
+		code := c.GetInt(ContextCode)
 		fmt.Println("aaa", code)
 		// Jsonify the response.
 		value, exists := c.Get(ContextKeyResp)
