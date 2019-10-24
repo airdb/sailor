@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/airdb/sailor/enum"
@@ -23,6 +24,7 @@ func Jsonifier() gin.HandlerFunc {
 		statusCode := http.StatusOK
 
 		code := c.GetInt("code")
+		fmt.Println("aaa", code)
 		// Jsonify the response.
 		value, exists := c.Get(ContextKeyResp)
 		if exists {
