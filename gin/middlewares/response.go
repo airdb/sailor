@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/airdb/sailor/enum"
@@ -9,7 +8,6 @@ import (
 )
 
 func SetResp(c *gin.Context, code uint, value interface{}) {
-	fmt.Println(code)
 	c.Set("code", code)
 	c.Set(ContextKeyResp, value)
 }
