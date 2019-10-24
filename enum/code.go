@@ -10,7 +10,7 @@ var AirdbSuccess uint = 20000
 var AirdbFailed uint = 20001
 var AirdbAuthFailed uint = 20002
 
-var AirdbUnknown uint = 30000
+var AirdbUnknown uint = 25000
 
 var CodeMap = map[string]uint{
 	"Success":      AirdbSuccess,
