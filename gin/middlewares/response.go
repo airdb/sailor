@@ -1,37 +1,41 @@
 package middlewares
 
 import (
+	"github.com/airdb/sailor/enum"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func SetResp(c *gin.Context, value interface{}) {
+func SetResp(c *gin.Context, code uint, value interface{}) {
+	c.Set("code", code)
 	c.Set(ContextKeyResp, value)
 }
 
-func SetErr(c *gin.Context, err *Error) {
-	c.Set(ContextKeyErr, err)
-}
-
-func Jsonifier(version string) gin.HandlerFunc {
+func Jsonifier() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Process request.
 		c.Next()
 
-		resp := &Response{
-			Version: version,
-		}
+		resp := &Response{}
 
 		shouldJsonify := false
 		statusCode := http.StatusOK
 
+		code := c.GetInt("code")
 		// Jsonify the response.
 		value, exists := c.Get(ContextKeyResp)
 		if exists {
 			resp.Success = true
+			resp.Code = uint(code)
 			resp.Content = value
-			resp.Error = nil
+			resp.Message = enum.FormCode(uint(code))
+			shouldJsonify = true
+		} else {
+			resp.Success = false
+			resp.Code = uint(code)
+			resp.Content = value
+			resp.Error = enum.FormCode(uint(code))
 			shouldJsonify = true
 		}
 

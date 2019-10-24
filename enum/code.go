@@ -21,8 +21,8 @@ var CodeMap = map[string]uint{
 
 var CodeMapInvert = InvertMap(CodeMap)
 
-func FormCode(code Code) string {
-	result, ok := CodeMapInvert[uint(code)]
+func FormCode(code uint) string {
+	result, ok := CodeMapInvert[code]
 	if ok {
 		return result
 	}

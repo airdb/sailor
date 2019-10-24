@@ -11,10 +11,11 @@ type ErrorRep struct {
 }
 
 type Response struct {
-	code    uint      `json:"code"`
-	Content bool        `json:"content"`
+	Code    uint        `json:"code"`
+	Success bool        `json:"success"`
+	Content interface{} `json:"content"`
 	Error   interface{} `json:"error,omitempty"`
-	Message  interface{} `json:"result,omitempty"`
+	Message interface{} `json:"result,omitempty"`
 }
 
 type Error struct {
