@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/airdb/sailor/enum"
@@ -10,8 +9,6 @@ import (
 
 func SetResp(c *gin.Context, code uint, value interface{}) {
 	c.Set(ContextCode, int(code))
-	fmt.Println("aaaa0000", code)
-	fmt.Println("=====")
 	c.Set(ContextKeyResp, value)
 }
 
@@ -25,15 +22,14 @@ func Jsonifier() gin.HandlerFunc {
 		shouldJsonify := false
 		statusCode := http.StatusOK
 
-		code := c.GetInt(ContextCode)
-		fmt.Println("aaa", code)
+		code := uint(c.GetInt(ContextCode))
 		// Jsonify the response.
 		value, exists := c.Get(ContextKeyResp)
 		if exists {
 			resp.Success = true
-			resp.Code = uint(code)
+			resp.Code = code
 			resp.Content = value
-			resp.Message = enum.FormCode(uint(code))
+			resp.Message = enum.FormCode(code)
 			shouldJsonify = true
 		} else {
 			resp.Success = false

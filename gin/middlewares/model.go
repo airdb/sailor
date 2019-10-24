@@ -1,7 +1,7 @@
 package middlewares
 
 const (
-	ContextCode = "code"
+	ContextCode    = "code"
 	ContextKeyResp = "resp"
 	ContextKeyErr  = "err"
 )
