@@ -1,9 +1,10 @@
 package middlewares
 
 import (
-	"github.com/airdb/sailor/enum"
+	"fmt"
 	"net/http"
 
+	"github.com/airdb/sailor/enum"
 	"github.com/gin-gonic/gin"
 )
 
