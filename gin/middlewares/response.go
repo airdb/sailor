@@ -1,13 +1,15 @@
 package middlewares
 
 import (
-	"github.com/airdb/sailor/enum"
+	"fmt"
 	"net/http"
 
+	"github.com/airdb/sailor/enum"
 	"github.com/gin-gonic/gin"
 )
 
 func SetResp(c *gin.Context, code uint, value interface{}) {
+	fmt.Println(code)
 	c.Set("code", code)
 	c.Set(ContextKeyResp, value)
 }
