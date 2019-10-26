@@ -19,6 +19,8 @@ func Jsonifier() gin.HandlerFunc {
 
 		statusCode := http.StatusOK
 
+		shouldJsonify := false
+
 		code := uint(c.GetInt(ContextCode))
 		if code == 0 {
 			code = enum.AirdbUndefined
@@ -32,13 +34,18 @@ func Jsonifier() gin.HandlerFunc {
 			Content: value,
 		}
 		if exists {
-			resp.Success = true
-			resp.Message = enum.FormCode(code)
-		} else {
-			resp.Success = false
-			resp.Error = enum.FormCode(code)
+			shouldJsonify = true
+			if code == enum.AirdbSuccess {
+				resp.Success = true
+				resp.Message = enum.FormCode(code)
+			} else {
+				resp.Success = false
+				resp.Error = enum.FormCode(code)
+			}
 		}
 
-		c.JSON(statusCode, resp)
+		if shouldJsonify {
+			c.JSON(statusCode, resp)
+		}
 	}
 }
