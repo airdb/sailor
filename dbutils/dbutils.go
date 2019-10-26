@@ -44,7 +44,7 @@ func InitDefault() {
 		db.SingularTable(true)
 		dbs.Store(name, db)
 
-		if item.DefaultDB {
+		if item.Default {
 			dbs.Store(defaultDB, db)
 		}
 

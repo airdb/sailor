@@ -34,7 +34,7 @@ type Database struct {
 	Password  string
 	Address   string
 	Name      string
-	DefaultDB bool
+	Default bool
 }
 
 func GetEnv() (env string) {
