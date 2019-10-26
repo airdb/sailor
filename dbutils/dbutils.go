@@ -18,6 +18,8 @@ const (
 	OperationRead  OperationType = 2
 )
 
+const defaultDB = "default"
+
 func InitDefault() {
 	databases := config.GetDatabases()
 	for name, item := range databases {
@@ -41,6 +43,11 @@ func InitDefault() {
 		db.LogMode(true)
 		db.SingularTable(true)
 		dbs.Store(name, db)
+
+		if item.DefaultDB {
+			dbs.Store(defaultDB, db)
+		}
+
 	}
 }
 
@@ -50,6 +57,20 @@ func WriteDB(name string) *gorm.DB {
 
 func ReadDB(name string) *gorm.DB {
 	return DB(name, OperationRead)
+}
+
+func DefaultDB() (db *gorm.DB) {
+	InitDefault()
+
+	_db, ok := dbs.Load(defaultDB)
+	if ok {
+		db = _db.(*gorm.DB)
+	}
+
+	if db == nil {
+		fmt.Println("error: ", db)
+	}
+	return
 }
 
 func DB(name string, typ OperationType) (db *gorm.DB) {
