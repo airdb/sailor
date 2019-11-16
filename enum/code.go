@@ -1,43 +1,37 @@
 package enum
 
-var AirdbSuccess uint = 20000
-var AirdbFailed uint = 20001
-var AirdbAuthFailed uint = 20002
+import (
+	"strings"
+)
 
-var AirdbUnknown uint = 24999
-var AirdbUndefined uint = 25000
+type Code uint
 
-var CodeMap = map[uint]string{
+const (
+	AirdbSuccess    Code = 20000
+	AirdbFailed     Code = 20001
+	AirdbAuthFailed Code = 20002
+	AirdbUnknown    Code = 25000
+)
+
+var CodeMap = map[Code]string{
 	AirdbSuccess:    "Success",
 	AirdbFailed:     "Failed",
-	AirdbAuthFailed: "Auth Failed",
-	AirdbUnknown:    "Uknown Error",
-	AirdbUndefined:  "Undefined Error",
+	AirdbAuthFailed: "Auth failed",
+	AirdbUnknown:    "Uknown error",
 }
 
-var CodeMapInvert = InvertMap(CodeMap)
-
-func FormCode(code uint) string {
-	result, ok := CodeMap[code]
-	if ok {
+func FormCode(code Code) string {
+	if result, ok := CodeMap[code]; ok {
 		return result
 	}
-	return CodeMap[AirdbUndefined]
+	return CodeMap[AirdbUnknown]
 }
 
-func ToCode(sCode string) uint {
-	result, ok := CodeMapInvert[sCode]
-	if ok {
-		return result
-	}
-
-	return AirdbUndefined
-}
-
-func InvertMap(input map[uint]string) map[string]uint {
-	newMap := make(map[string]uint)
-	for k, v := range input {
-		newMap[v] = k
-	}
-	return newMap
+func ToCode(sCode string) Code {
+	for k, v := range CodeMap {
+		if v == strings.ToLower(sCode) {
+			return k
+		}
+  }
+	return AirdbUnknown
 }

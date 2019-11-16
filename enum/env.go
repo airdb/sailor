@@ -1,5 +1,7 @@
 package enum
 
+import "strings"
+
 type Env uint
 
 const (
@@ -12,68 +14,48 @@ const (
 	EnvLive
 )
 
+var EnvMap = map[Env]string{
+	EnvDev:     "dev",
+	EnvTest:    "test",
+	EnvStable:  "stable",
+	EnvStaging: "staging",
+	EnvUAT:     "uat",
+	EnvLivesh:  "livesh",
+	EnvLive:    "live",
+}
+
 func FromEnv(env Env) string {
-	switch env {
-	case EnvTest:
-		return "TEST"
-	case EnvStable:
-		return "STABLE"
-	case EnvStaging:
-		return "STAGING"
-	case EnvUAT:
-		return "UAT"
-	case EnvLivesh:
-		return "LIVESH"
-	case EnvLive:
-		return "LIVE"
-	default:
-		return "DEV"
+	if result, ok := EnvMap[env]; ok {
+		return result
 	}
+	return EnvMap[EnvDev]
 }
 
 func ToEnv(sEnv string) Env {
-	switch sEnv {
-	case "TEST":
-		return EnvTest
-	case "STABLE":
-		return EnvStable
-	case "STAGING":
-		return EnvStaging
-	case "UAT":
-		return EnvUAT
-	case "LIVESH":
-		return EnvLivesh
-	case "LIVE":
-		return EnvLive
-	default:
-		return EnvDev
+	for k, v := range EnvMap {
+		if v == strings.ToLower(sEnv) {
+			return k
+		}
 	}
+	return EnvDev
 }
 
 func IsLiveEnv(sEnv string) bool {
-	return sEnv == FromEnv(EnvLive) || sEnv == FromEnv(EnvLivesh)
+	return sEnv == EnvMap[EnvLive] || sEnv == EnvMap[EnvLivesh]
 }
 
 func GetEnvList() (envList []string) {
-	envList = append(envList,
-		FromEnv(EnvDev),
-		FromEnv(EnvTest),
-		FromEnv(EnvStable),
-		FromEnv(EnvStaging),
-		FromEnv(EnvUAT),
-		FromEnv(EnvLivesh),
-		FromEnv(EnvLive),
-	)
+	for _, v := range EnvMap {
+		envList = append(envList, v)
+	}
 	return
 }
 
 func GetNonLiveEnvList() (envList []string) {
-	envList = append(envList,
-		FromEnv(EnvDev),
-		FromEnv(EnvTest),
-		FromEnv(EnvStable),
-		FromEnv(EnvStaging),
-		FromEnv(EnvUAT),
-	)
+	for k, v := range EnvMap {
+		if k == EnvLivesh || k == EnvLive {
+			envList = append(envList, v)
+		}
+	}
 	return
 }
