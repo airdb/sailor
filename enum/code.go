@@ -32,6 +32,6 @@ func ToCode(sCode string) Code {
 		if v == strings.ToLower(sCode) {
 			return k
 		}
-	}
+  }
 	return AirdbUnknown
 }
