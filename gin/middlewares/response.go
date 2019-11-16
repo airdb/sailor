@@ -31,13 +31,13 @@ func Jsonifier() gin.HandlerFunc {
 			resp.Success = true
 			resp.Code = uint(code)
 			resp.Content = value
-			resp.Message = enum.FormCode(uint(code))
+			resp.Message = enum.FormCode(enum.Code(code))
 			shouldJsonify = true
 		} else {
 			resp.Success = false
 			resp.Code = uint(code)
 			resp.Content = value
-			resp.Error = enum.FormCode(uint(code))
+			resp.Error = enum.FormCode(enum.Code(code))
 			shouldJsonify = true
 		}
 

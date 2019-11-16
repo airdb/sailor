@@ -6,42 +6,32 @@ import (
 
 type Code uint
 
-var AirdbSuccess uint = 20000
-var AirdbFailed uint = 20001
-var AirdbAuthFailed uint = 20002
+const (
+	AirdbSuccess    Code = 20000
+	AirdbFailed     Code = 20001
+	AirdbAuthFailed Code = 20002
+	AirdbUnknown    Code = 25000
+)
 
-var AirdbUnknown uint = 25000
-
-var CodeMap = map[string]uint{
-	"Success":      AirdbSuccess,
-	"Failed":       AirdbFailed,
-	"Auth failed":  AirdbAuthFailed,
-	"Uknown error": AirdbUnknown,
+var CodeMap = map[Code]string{
+	AirdbSuccess:    "Success",
+	AirdbFailed:     "Failed",
+	AirdbAuthFailed: "Auth failed",
+	AirdbUnknown:    "Uknown error",
 }
 
-var CodeMapInvert = InvertMap(CodeMap)
-
-func FormCode(code uint) string {
-	result, ok := CodeMapInvert[code]
-	if ok {
+func FormCode(code Code) string {
+	if result, ok := CodeMap[code]; ok {
 		return result
 	}
-	return ""
+	return CodeMap[AirdbUnknown]
 }
 
 func ToCode(sCode string) Code {
-	result, ok := CodeMap[strings.ToLower(sCode)]
-	if ok {
-		return Code(result)
+	for k, v := range CodeMap {
+		if v == strings.ToLower(sCode) {
+			return k
+		}
 	}
-
-	return 0
-}
-
-func InvertMap(input map[string]uint) map[uint]string {
-	newMap := make(map[uint]string)
-	for k, v := range input {
-		newMap[v] = k
-	}
-	return newMap
+	return AirdbUnknown
 }
