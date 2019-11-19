@@ -1,15 +1,14 @@
 package middlewares
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/airdb/sailor/enum"
 	"github.com/gin-gonic/gin"
 )
 
-func SetResp(c *gin.Context, code int, value interface{}) {
-	c.Set("code", code)
+func SetResp(c *gin.Context, status enum.Code, value interface{}) {
+	c.Set("status", status)
 	c.Set(ContextKeyResp, value)
 }
 
@@ -23,21 +22,22 @@ func Jsonifier() gin.HandlerFunc {
 		shouldJsonify := false
 		statusCode := http.StatusOK
 
-		code := c.GetInt("code")
-		fmt.Println("xxxx", code)
+		status := c.GetInt("status")
 		// Jsonify the response.
 		value, exists := c.Get(ContextKeyResp)
 		if exists {
 			resp.Success = true
-			resp.Code = uint(code)
+			resp.Code = uint(status)
 			resp.Content = value
-			resp.Message = enum.FormCode(enum.Code(code))
+			resp.Data = value
+			resp.Message = enum.FormCode(enum.Code(status))
 			shouldJsonify = true
 		} else {
 			resp.Success = false
-			resp.Code = uint(code)
+			resp.Code = uint(status)
 			resp.Content = value
-			resp.Error = enum.FormCode(enum.Code(code))
+			resp.Data = value
+			resp.Error = enum.FormCode(enum.Code(status))
 			shouldJsonify = true
 		}
 
