@@ -78,7 +78,7 @@ func Init() {
 	binPath := filepath.Dir(os.Args[0])
 
 	workDir, err := filepath.Abs(binPath)
-	if strings.Contains(binPath, "go-build") || strings.Contains(binPath, "go_build") {
+	if GetEnv() == enum.FromEnv(enum.EnvDev) {
 		workDir, err = os.Getwd()
 	}
 
