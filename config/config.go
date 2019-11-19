@@ -77,9 +77,9 @@ func GetDatabases() (databases map[string]*Database) {
 func Init() {
 	binPath := filepath.Dir(os.Args[0])
 
-	workDir, err := os.Getwd()
-	if !strings.Contains(binPath, "go-build") {
-		workDir, err = filepath.Abs(binPath)
+	workDir, err := filepath.Abs(binPath)
+	if strings.Contains(binPath, "go-build") || strings.Contains(binPath, "go_build") {
+		workDir, err = os.Getwd()
 	}
 
 	if err != nil {
