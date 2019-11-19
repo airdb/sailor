@@ -30,11 +30,11 @@ var (
 )
 
 type Database struct {
-	User      string
-	Password  string
-	Address   string
-	Name      string
-	Default bool
+	User     string
+	Password string
+	Address  string
+	Name     string
+	Default  bool
 }
 
 func GetEnv() (env string) {
