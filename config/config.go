@@ -74,15 +74,20 @@ func GetDatabases() (databases map[string]*Database) {
 }
 
 func Init() {
-	workDir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	binPath := filepath.Dir(os.Args[0])
+
+	workDir, err := os.Getwd()
+	if !strings.Contains(binPath, "go-build") {
+		workDir, err = filepath.Abs(binPath)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}
-	if GetEnv() == "dev" {
-		viper.AddConfigPath("conf")
-	} else {
-		viper.AddConfigPath(path.Join(workDir, "conf"))
-	}
+
+	viper.AddConfigPath(path.Join(workDir, "conf"))
+	viper.AddConfigPath(path.Join(workDir, "config"))
+	viper.AddConfigPath(path.Join(workDir, "configs"))
 	viper.SetConfigName(GetEnv())
 
 	err = viper.ReadInConfig()
