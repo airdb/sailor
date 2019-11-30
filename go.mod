@@ -10,5 +10,6 @@ require (
 	github.com/jinzhu/gorm v1.9.11
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644
 	github.com/spf13/viper v1.4.0
+	github.com/stretchr/testify v1.4.0
 	github.com/swaggo/gin-swagger v1.2.0
 )

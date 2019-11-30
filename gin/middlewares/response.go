@@ -8,7 +8,8 @@ import (
 )
 
 func SetResp(c *gin.Context, status enum.Code, value interface{}) {
-	c.Set("status", status)
+	// Set value must be int.
+	c.Set(StatusCode, int(status))
 	c.Set(ContextKeyResp, value)
 }
 
@@ -22,7 +23,7 @@ func Jsonifier() gin.HandlerFunc {
 		shouldJsonify := false
 		statusCode := http.StatusOK
 
-		status := c.GetInt("status")
+		status := c.GetInt(StatusCode)
 		// Jsonify the response.
 		value, exists := c.Get(ContextKeyResp)
 		if exists {
