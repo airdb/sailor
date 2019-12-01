@@ -2,12 +2,14 @@ package byteutil
 
 import (
 	"bytes"
+	"crypto/rand"
+	"encoding/base64"
+	"log"
 	"strconv"
 	"strings"
 	//   "encoding/binary"
 )
 
-//byte转16进制字符串
 func ByteToHex(data []byte) string {
 	buffer := new(bytes.Buffer)
 	for _, b := range data {
@@ -46,6 +48,16 @@ func ByteToString(c []byte) string {
 		n = i
 	}
 	return string(c[:n+1])
+}
+
+// Generate a random token
+func RandToken() string {
+	b := make([]byte, 32)
+	_, err := rand.Read(b)
+	if err != nil {
+		log.Println(err)
+	}
+	return base64.StdEncoding.EncodeToString(b)
 }
 
 /*
