@@ -4,8 +4,6 @@
 
 Sailor is a Base Common Golang Lib.
 
-auto ci
-
 ## Airdb-Defined Error Codes
 
 Airdb reserved the error code range from 20000 to 24999 for defined Error Codes.
