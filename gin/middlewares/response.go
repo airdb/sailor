@@ -29,14 +29,12 @@ func Jsonifier() gin.HandlerFunc {
 		if exists {
 			resp.Success = true
 			resp.Code = uint(status)
-			resp.Content = value
 			resp.Data = value
 			resp.Message = enum.FormCode(enum.Code(status))
 			shouldJsonify = true
 		} else {
 			resp.Success = false
 			resp.Code = uint(status)
-			resp.Content = value
 			resp.Data = value
 			resp.Error = enum.FormCode(enum.Code(status))
 			shouldJsonify = true
