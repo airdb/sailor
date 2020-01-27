@@ -46,6 +46,7 @@ func TestSpec(t *testing.T) {
 	toolbox.AddTask("tk2", tk2)
 	toolbox.AddTask("tk3", tk3)
 	toolbox.StartTask()
+
 	defer toolbox.StopTask()
 
 	select {
@@ -57,9 +58,11 @@ func TestSpec(t *testing.T) {
 
 func wait(wg *sync.WaitGroup) chan bool {
 	ch := make(chan bool)
+
 	go func() {
 		wg.Wait()
 		ch <- true
 	}()
+
 	return ch
 }

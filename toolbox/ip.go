@@ -8,7 +8,7 @@ import (
 )
 
 // Convert uint to net.IP
-func Inet_ntoa(ipnr int64) net.IP {
+func InetNtoa(ipnr int64) net.IP {
 	var bytes [4]byte
 	bytes[0] = byte(ipnr & 0xFF)
 	bytes[1] = byte((ipnr >> 8) & 0xFF)
@@ -19,7 +19,7 @@ func Inet_ntoa(ipnr int64) net.IP {
 }
 
 // Convert net.IP to int64
-func Inet_aton(ipnr string) int64 {
+func InetAton(ipnr string) int64 {
 	// parse ip to net.IP,  return nil if not ip
 	addr := net.ParseIP(ipnr)
 	if addr == nil {

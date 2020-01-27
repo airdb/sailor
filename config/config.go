@@ -1,13 +1,14 @@
 package config
 
 import (
-	"github.com/airdb/sailor/enum"
-	"github.com/spf13/viper"
 	"log"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
+
+	"github.com/airdb/sailor/enum"
+	"github.com/spf13/viper"
 )
 
 var (
