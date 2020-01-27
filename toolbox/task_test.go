@@ -57,9 +57,11 @@ func TestSpec(t *testing.T) {
 
 func wait(wg *sync.WaitGroup) chan bool {
 	ch := make(chan bool)
+
 	go func() {
 		wg.Wait()
 		ch <- true
 	}()
+
 	return ch
 }

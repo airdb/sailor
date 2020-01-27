@@ -2,7 +2,9 @@ package dbutils
 
 import (
 	"fmt"
+	"log"
 	"sync"
+	"sync/atomic"
 
 	"github.com/airdb/sailor/config"
 	_ "github.com/go-sql-driver/mysql"
@@ -10,6 +12,8 @@ import (
 )
 
 var dbs sync.Map
+var hasInit int32
+var hasPend sync.Mutex
 
 type OperationType uint
 
@@ -21,6 +25,18 @@ const (
 const defaultDB = "default"
 
 func InitDefault() {
+	if atomic.LoadInt32(&hasInit) == 1 {
+		return
+	}
+
+	hasPend.Lock()
+	defer hasPend.Unlock()
+
+	if atomic.LoadInt32(&hasInit) == 1 {
+		log.Println("cocurrent_between_coroutines")
+		return
+	}
+
 	databases := config.GetDatabases()
 	for name, item := range databases {
 		db, err := gorm.Open(
@@ -49,6 +65,8 @@ func InitDefault() {
 		}
 
 	}
+
+	atomic.StoreInt32(&hasInit, 1)
 }
 
 func WriteDB(name string) *gorm.DB {
@@ -103,4 +121,19 @@ func DB(name string, typ OperationType) (db *gorm.DB) {
 	}
 
 	return
+}
+
+// InitTestDB will init the mock DB and lock the db so that the actual db will not be required.
+func InitTestDB(name string, db *gorm.DB) error {
+	if !atomic.CompareAndSwapInt32(&hasInit, 0, 1) {
+		return nil
+	}
+
+	dbs.Store(name, db)
+	return nil
+}
+
+// ReleaseTestDB is to release the lock for other unit tests to mock db successfully.
+func ReleaseTestDB() {
+	atomic.CompareAndSwapInt32(&hasInit, 1, 0)
 }
