@@ -289,6 +289,7 @@ func (t *Task) parseSpec(spec string) *Schedule {
 		}
 	}
 	log.Panicf("Unrecognized descriptor: %s", spec)
+
 	return nil
 }
 
@@ -399,6 +400,7 @@ func StartTask() {
 		return
 	}
 	isstart = true
+
 	go run()
 }
 
@@ -435,12 +437,14 @@ func run() {
 				e.SetPrev(e.GetNext())
 				e.SetNext(effective)
 			}
+
 			continue
 		case <-changed:
 			now = time.Now().Local()
 			for _, t := range AdminTaskList {
 				t.SetNext(now)
 			}
+
 			continue
 		case <-stop:
 			return
@@ -456,7 +460,6 @@ func StopTask() {
 		isstart = false
 		stop <- true
 	}
-
 }
 
 // AddTask add task with name
@@ -523,16 +526,17 @@ func getField(field string, r bounds) uint64 {
 	// list = range {"," range}
 	var bits uint64
 	ranges := strings.FieldsFunc(field, func(r rune) bool { return r == ',' })
+
 	for _, expr := range ranges {
 		bits |= getRange(expr, r)
 	}
+
 	return bits
 }
 
 // getRange returns the bits indicated by the given expression:
 //   number | number "-" number [ "/" number ]
 func getRange(expr string, r bounds) uint64 {
-
 	var (
 		start, end, step uint
 		rangeAndStep     = strings.Split(expr, "/")
@@ -541,6 +545,7 @@ func getRange(expr string, r bounds) uint64 {
 	)
 
 	var extrastar uint64
+
 	if lowAndHigh[0] == "*" || lowAndHigh[0] == "?" {
 		start = r.min
 		end = r.max
@@ -628,7 +633,7 @@ func all(r bounds) uint64 {
 	return getBits(r.min, r.max, 1) | starBit
 }
 
-func init() {
+func Init() {
 	AdminTaskList = make(map[string]Tasker)
 	stop = make(chan bool)
 	changed = make(chan bool)

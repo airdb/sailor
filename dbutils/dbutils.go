@@ -3,11 +3,11 @@ package dbutils
 import (
 	"fmt"
 	"log"
+	"os"
 	"sync"
 	"sync/atomic"
 
-	"github.com/airdb/sailor/config"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql" // golint
 	"github.com/jinzhu/gorm"
 )
 
@@ -18,11 +18,43 @@ var hasPend sync.Mutex
 type OperationType uint
 
 const (
-	OperationWrite OperationType = 1
-	OperationRead  OperationType = 2
+	defaultDB = "GDBC"
+	readDB    = "READ_GDBC"
+	writeDB   = "WRITE_GDBC"
 )
 
-const defaultDB = "default"
+type Database struct {
+	Name string
+	GDBC string
+}
+
+func GetDatabases() (databases []*Database) {
+	// export GDBC="user:passwd@tcp(host:port)/dbname"
+	// databases.GDBC = os.Getenv("GDBC")
+	// DEFAULT GDBC
+	if os.Getenv(defaultDB) != "" {
+		databases = append(databases, &Database{
+			Name: defaultDB,
+			GDBC: os.Getenv(defaultDB),
+		})
+	}
+
+	if os.Getenv(readDB) != "" {
+		databases = append(databases, &Database{
+			Name: readDB,
+			GDBC: os.Getenv(readDB),
+		})
+	}
+
+	if os.Getenv(writeDB) != "" {
+		databases = append(databases, &Database{
+			Name: writeDB,
+			GDBC: os.Getenv(writeDB),
+		})
+	}
+
+	return databases
+}
 
 func InitDefault() {
 	if atomic.LoadInt32(&hasInit) == 1 {
@@ -37,16 +69,14 @@ func InitDefault() {
 		return
 	}
 
-	databases := config.GetDatabases()
+	databases := GetDatabases()
+
 	for name, item := range databases {
 		db, err := gorm.Open(
 			"mysql",
 			fmt.Sprintf(
-				"%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
-				item.User,
-				item.Password,
-				item.Address,
-				item.Name,
+				"%s?charset=utf8&parseTime=True&loc=Local",
+				item.GDBC,
 			),
 		)
 		if err != nil {
@@ -58,57 +88,27 @@ func InitDefault() {
 
 		db.LogMode(true)
 		db.SingularTable(true)
+
 		dbs.Store(name, db)
 
-		if item.Default {
-			dbs.Store(defaultDB, db)
-		}
-
+		atomic.StoreInt32(&hasInit, 1)
 	}
-
-	atomic.StoreInt32(&hasInit, 1)
 }
 
 func WriteDB(name string) *gorm.DB {
-	return DB(name, OperationWrite)
+	return DB(writeDB)
 }
 
 func ReadDB(name string) *gorm.DB {
-	return DB(name, OperationRead)
+	return DB(readDB)
 }
 
 func DefaultDB() (db *gorm.DB) {
-	InitDefault()
-
-	_db, ok := dbs.Load(defaultDB)
-	if ok {
-		db = _db.(*gorm.DB)
-	}
-
-	if db == nil {
-		fmt.Println("error: ", db)
-	}
-	return
+	return DB(defaultDB)
 }
 
-func DB(name string, typ OperationType) (db *gorm.DB) {
+func DB(name string) (db *gorm.DB) {
 	InitDefault()
-
-	var nameWithOperation string
-
-	switch typ {
-	case OperationWrite:
-		nameWithOperation = fmt.Sprintf("%v.write", name)
-	case OperationRead:
-		nameWithOperation = fmt.Sprintf("%v.read", name)
-	}
-
-	if len(nameWithOperation) > 0 {
-		_db, ok := dbs.Load(nameWithOperation)
-		if ok {
-			db = _db.(*gorm.DB)
-		}
-	}
 
 	// Fallback to default db if could not find `nameWithOperation`.
 	_db, ok := dbs.Load(name)

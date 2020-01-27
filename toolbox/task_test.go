@@ -46,6 +46,7 @@ func TestSpec(t *testing.T) {
 	toolbox.AddTask("tk2", tk2)
 	toolbox.AddTask("tk3", tk3)
 	toolbox.StartTask()
+
 	defer toolbox.StopTask()
 
 	select {
