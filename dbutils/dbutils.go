@@ -72,10 +72,7 @@ func InitDefault() {
 	databases := GetDatabases()
 
 	for name, item := range databases {
-		gdbc := fmt.Sprintf(
-			"%s?charset=utf8&parseTime=True&loc=Local",
-			item.GDBC,
-		)
+		gdbc := item.GDBC + "?charset=utf8&parseTime=True&loc=Local"
 		db, err := gorm.Open(
 			"mysql",
 			gdbc,
