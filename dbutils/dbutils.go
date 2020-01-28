@@ -87,6 +87,9 @@ func InitDefault() {
 
 		db.LogMode(true)
 		db.SingularTable(true)
+		gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
+			return defaultTableName + "_tab"
+		}
 
 		dbs.Store(name, db)
 
