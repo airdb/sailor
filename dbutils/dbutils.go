@@ -72,16 +72,18 @@ func InitDefault() {
 	databases := GetDatabases()
 
 	for name, item := range databases {
+		gdbc := fmt.Sprintf(
+			"%s?charset=utf8&parseTime=True&loc=Local",
+			item.GDBC,
+		)
 		db, err := gorm.Open(
 			"mysql",
-			fmt.Sprintf(
-				"%s?charset=utf8&parseTime=True&loc=Local",
-				item.GDBC,
-			),
+			gdbc,
 		)
+
 		if err != nil {
-			fmt.Println("Error: connect to db server failed, ", err)
-			// panic("Error: connect to db server failed")
+			fmt.Println("Error: connect to db server failed, ", gdbc, err)
+			panic("Error: connect to db server failed")
 		} else {
 			fmt.Println("init db success")
 		}
