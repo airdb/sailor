@@ -87,6 +87,7 @@ func InitDefault() {
 
 		db.LogMode(true)
 		db.SingularTable(true)
+
 		gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
 			return defaultTableName + "_tab"
 		}
@@ -110,8 +111,6 @@ func DefaultDB() (db *gorm.DB) {
 }
 
 func DB(name string) (db *gorm.DB) {
-	// InitDefault()
-
 	_db, ok := dbs.Load(name)
 	if ok {
 		db = _db.(*gorm.DB)
@@ -131,6 +130,7 @@ func InitTestDB(name string, db *gorm.DB) error {
 	}
 
 	dbs.Store(name, db)
+
 	return nil
 }
 

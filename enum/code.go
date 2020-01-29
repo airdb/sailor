@@ -27,6 +27,7 @@ func FormCode(code Code) string {
 	if result, ok := CodeMap[code]; ok {
 		return result
 	}
+
 	return CodeMap[AirdbUnknown]
 }
 
@@ -36,5 +37,6 @@ func ToCode(sCode string) Code {
 			return k
 		}
 	}
+
 	return AirdbUnknown
 }

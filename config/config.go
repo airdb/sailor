@@ -43,7 +43,9 @@ func GetEnv() (env string) {
 	if env == "" {
 		env = enum.FromEnv(enum.EnvDev)
 	}
+
 	env = strings.ToLower(env)
+
 	return env
 }
 
@@ -52,27 +54,13 @@ func GetPort() (port string) {
 	if port == "" {
 		port = "8080"
 	}
+
 	return
 }
 
-func GetDatabases() (databases map[string]*Database) {
-	Init()
-	err := viper.UnmarshalKey("databases", &databases)
-	if err != nil {
-		log.Fatal("could not parse config for databases")
-	}
-
-	for name := range databases {
-		splits := strings.SplitN(name, ".", 2)
-		operationType := splits[len(splits)-1]
-		if operationType == "read" || operationType == "write" {
-			databases[name].Name = splits[0]
-		} else {
-			databases[name].Name = name
-		}
-	}
-
-	return databases
+func GetDefaultBindAddress() (address string) {
+	address = "0.0.0.0:" + GetPort()
+	return
 }
 
 func Init() {
