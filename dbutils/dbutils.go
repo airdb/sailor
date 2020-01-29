@@ -71,25 +71,28 @@ func InitDefault() {
 
 	databases := GetDatabases()
 
-	for name, item := range databases {
+	for _, item := range databases {
+		gdbc := item.GDBC + "?charset=utf8&parseTime=True&loc=Local"
 		db, err := gorm.Open(
 			"mysql",
-			fmt.Sprintf(
-				"%s?charset=utf8&parseTime=True&loc=Local",
-				item.GDBC,
-			),
+			gdbc,
 		)
+
 		if err != nil {
-			fmt.Println("Error: connect to db server failed, ", err)
-			// panic("Error: connect to db server failed")
+			log.Println("Error: connect to db server failed, ", gdbc, err)
+			panic("Error: connect to db server failed")
 		} else {
-			fmt.Println("init db success")
+			log.Println("Connect to db success")
 		}
 
 		db.LogMode(true)
 		db.SingularTable(true)
 
-		dbs.Store(name, db)
+		gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
+			return defaultTableName + "_tab"
+		}
+
+		dbs.Store(item.Name, db)
 
 		atomic.StoreInt32(&hasInit, 1)
 	}
@@ -108,9 +111,6 @@ func DefaultDB() (db *gorm.DB) {
 }
 
 func DB(name string) (db *gorm.DB) {
-	InitDefault()
-
-	// Fallback to default db if could not find `nameWithOperation`.
 	_db, ok := dbs.Load(name)
 	if ok {
 		db = _db.(*gorm.DB)
@@ -130,6 +130,7 @@ func InitTestDB(name string, db *gorm.DB) error {
 	}
 
 	dbs.Store(name, db)
+
 	return nil
 }
 

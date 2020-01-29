@@ -28,6 +28,7 @@ func FromEnv(env Env) string {
 	if result, ok := EnvMap[env]; ok {
 		return result
 	}
+
 	return EnvMap[EnvDev]
 }
 
@@ -37,6 +38,7 @@ func ToEnv(sEnv string) Env {
 			return k
 		}
 	}
+
 	return EnvDev
 }
 
@@ -48,6 +50,7 @@ func GetEnvList() (envList []string) {
 	for _, v := range EnvMap {
 		envList = append(envList, v)
 	}
+
 	return
 }
 
@@ -57,5 +60,6 @@ func GetNonLiveEnvList() (envList []string) {
 			envList = append(envList, v)
 		}
 	}
+
 	return
 }

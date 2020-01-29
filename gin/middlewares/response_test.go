@@ -39,30 +39,32 @@ func APIClient(method, path string) (*httptest.ResponseRecorder, error) {
 
 	req, err := http.NewRequest(method, path, nil)
 	req.Header.Set("Content-Type", "application/json")
+
 	w := httptest.NewRecorder()
 
 	router.ServeHTTP(w, req)
+
 	return w, err
 }
 
 func TestResponse(t *testing.T) {
 	asserts := assert.New(t)
+
 	for _, testCase := range testCases {
-		uri := path.Join(testCase.Uri)
-		t.Log("test case:", testCase.TestID, testCase.Uri)
+		uri := path.Join(testCase.URI)
+		t.Log("test case:", testCase.TestID, testCase.URI)
 		resp, err := APIClient(testCase.Method, uri)
 		t.Log(resp.Body.String())
 		asserts.NoError(err)
 
 		assert.Equal(t, testCase.ExpectedCode, resp.Code)
-		// assert.Regexp(testCase.responseRegexg, resp.Body.String(), )
 	}
 }
 
 //You could write the init logic like reset database code here
 var testCases = []struct {
 	TestID         int
-	Uri            string
+	URI            string
 	Method         string
 	bodyData       string
 	ExpectedCode   int
