@@ -1,8 +1,10 @@
 package middlewares
 
 import (
+	"log"
 	"net/http"
 
+	"github.com/airdb/sailor"
 	"github.com/airdb/sailor/enum"
 	"github.com/gin-gonic/gin"
 )
@@ -43,5 +45,25 @@ func Jsonifier() gin.HandlerFunc {
 		if shouldJsonify {
 			c.JSON(statusCode, resp)
 		}
+	}
+}
+
+func Logger() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		start := sailor.UnixTimeMilliSecond()
+
+		// Process request.
+		c.Next()
+
+		end := sailor.UnixTimeMilliSecond()
+		cost := int((end - start) * 1000)
+
+		log.Printf("%s %s %d %d %s",
+			c.ClientIP(),
+			c.Request.Method,
+			c.Writer.Status(),
+			cost,
+			c.Request.RequestURI,
+		)
 	}
 }
