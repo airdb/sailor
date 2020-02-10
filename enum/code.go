@@ -4,18 +4,16 @@ import (
 	"strings"
 )
 
-type Code uint
-
 // Airdb error codes for user.
 const (
-	AirdbSuccess    Code = 20000
-	AirdbFailed     Code = 20001
-	AirdbAuthFailed Code = 20002
-	AirdbUndefined  Code = 24999
-	AirdbUnknown    Code = 25000
+	AirdbSuccess    uint = 20000
+	AirdbFailed     uint = 20001
+	AirdbAuthFailed uint = 20002
+	AirdbUndefined  uint = 24999
+	AirdbUnknown    uint = 25000
 )
 
-var CodeMap = map[Code]string{
+var CodeMap = map[uint]string{
 	AirdbSuccess:    "Success",
 	AirdbFailed:     "Failed",
 	AirdbAuthFailed: "Auth failed",
@@ -23,7 +21,7 @@ var CodeMap = map[Code]string{
 	AirdbUnknown:    "Uknown error",
 }
 
-func FormCode(code Code) string {
+func FormCode(code uint) string {
 	if result, ok := CodeMap[code]; ok {
 		return result
 	}
@@ -31,7 +29,7 @@ func FormCode(code Code) string {
 	return CodeMap[AirdbUnknown]
 }
 
-func ToCode(sCode string) Code {
+func ToCode(sCode string) uint {
 	for k, v := range CodeMap {
 		if v == strings.ToLower(sCode) {
 			return k
