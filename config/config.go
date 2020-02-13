@@ -52,7 +52,7 @@ func GetEnv() (env string) {
 func GetPort() (port string) {
 	port = os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "80"
 	}
 
 	return
@@ -84,4 +84,8 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func InitLog() {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 }
