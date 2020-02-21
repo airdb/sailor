@@ -1,11 +1,6 @@
-package middlewares
+package sailor
 
-const (
-	StatusCode     = "code"
-	ContextKeyResp = "resp"
-)
-
-type Response struct {
+type HTTPAirdbResponse struct {
 	Code    uint        `json:"code"`
 	Success bool        `json:"success"`
 	Data    interface{} `json:"data"`

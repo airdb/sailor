@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v1
+      - name: Use Golang
+        uses: actions/setup-go@v1
+        with:
+          go-version: "1.13.x"
+
+      - name: Test
+        run: |
+          echo go test -v .
+          # DB_HOST=127.0.0.1 DB_PORT=3306 DB_USER=root DB_PASSWD=passwd DB_NAME=test go test -v ./...
+
+      - name: Bump version and push tag
+        id: bump_version
+        uses: anothrNick/github-tag-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.bump_version.outputs.tag }}
+          release_name: Release ${{ steps.bump_version.outputs.tag }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false

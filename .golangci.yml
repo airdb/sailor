@@ -10,5 +10,4 @@ linters-settings:
 linters:
   disable:
     - gochecknoglobals
-    - gomnd
   enable-all: true
