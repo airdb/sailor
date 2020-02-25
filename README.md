@@ -1,6 +1,8 @@
 # sailor
 
 ![Build Status](https://github.com/airdb/sailor/workflows/Go/badge.svg)
+[![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/airdb/sailor?tab=doc)
+
 
 Sailor is a Base Common Golang Lib.
 

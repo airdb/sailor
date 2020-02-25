@@ -47,6 +47,7 @@ func InitDB(dbname string) {
 	if dbname != DefaultEnvPrefix {
 		viper.SetEnvPrefix(dbname)
 	}
+
 	viper.AutomaticEnv()
 
 	gdbc := fmt.Sprintf(
