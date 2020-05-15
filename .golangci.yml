@@ -11,4 +11,5 @@ linters:
   disable:
     - gochecknoglobals
     - gomnd
+    - testpackage
   enable-all: true
