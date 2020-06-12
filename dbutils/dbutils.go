@@ -1,7 +1,6 @@
 package dbutils
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"sync"
@@ -16,27 +15,22 @@ var hasInit int32
 var hasPend sync.Mutex
 
 func InitDB(dbNames []string) {
+	if atomic.LoadInt32(&hasInit) == 1 {
+		return
+	}
+
+	hasPend.Lock()
+	defer hasPend.Unlock()
+
 	for _, dbName := range dbNames {
-		if atomic.LoadInt32(&hasInit) == 1 {
-			return
-		}
-
-		hasPend.Lock()
-		defer hasPend.Unlock()
-
-		if atomic.LoadInt32(&hasInit) == 1 {
-			log.Println("cocurrent_between_coroutines")
-			return
-		}
-
 		gdbc := os.Getenv(dbName)
 
 		conn, err := gorm.Open("mysql", gdbc)
 		if err != nil {
-			log.Println("Error: connect to db server failed, ", gdbc, err)
+			log.Printf("Error: connect to databases %s failed, err is %v\n", gdbc, err)
 			panic("Error: connect to db server failed")
 		} else {
-			log.Println("Connect to db success")
+			log.Printf("Connect to %s successfully.\n", dbName)
 		}
 
 		conn.LogMode(true)
@@ -47,9 +41,14 @@ func InitDB(dbNames []string) {
 		}
 
 		dbs.Store(dbName, conn)
-
-		atomic.StoreInt32(&hasInit, 1)
 	}
+
+	if atomic.LoadInt32(&hasInit) == 1 {
+		log.Println("cocurrent_between_coroutines")
+		return
+	}
+
+	atomic.StoreInt32(&hasInit, 1)
 }
 
 func WriteDB(name string) *gorm.DB {
@@ -67,7 +66,7 @@ func DB(name string) (db *gorm.DB) {
 	}
 
 	if db == nil {
-		fmt.Println("error db: ", db)
+		log.Printf("database %s is nil.\n", name)
 	}
 
 	return
