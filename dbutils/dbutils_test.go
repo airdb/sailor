@@ -1,13 +1,15 @@
-package dbutils
+package dbutils_test
 
 import (
+	"os"
 	"testing"
+
+	"github.com/airdb/sailor/dbutils"
 )
 
-func TestInitDefault(t *testing.T) {
-	InitDefault()
-	InitDB("")
-	DefaultDB().Get("dev_mina")
-	DefaultDB().Get("dev_mina")
-	DefaultDB()
+func TestInitDB(t *testing.T) {
+	os.Setenv("testdb", "root:airdb.dev@tcp(127.0.0.1:3306)/")
+
+	dbs := []string{"testdb"}
+	dbutils.InitDB(dbs)
 }
