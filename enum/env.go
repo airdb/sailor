@@ -7,21 +7,15 @@ type Env uint
 const (
 	EnvDev Env = iota + 1
 	EnvTest
-	EnvStable
-	EnvStaging
-	EnvUAT
-	EnvLivesh
+	EnvPro
 	EnvLive
 )
 
 var EnvMap = map[Env]string{
-	EnvDev:     "dev",
-	EnvTest:    "test",
-	EnvStable:  "stable",
-	EnvStaging: "staging",
-	EnvUAT:     "uat",
-	EnvLivesh:  "livesh",
-	EnvLive:    "live",
+	EnvDev:  "dev",
+	EnvTest: "test",
+	EnvPro:  "pro",
+	EnvLive: "live",
 }
 
 func FromEnv(env Env) string {
@@ -43,22 +37,12 @@ func ToEnv(sEnv string) Env {
 }
 
 func IsLiveEnv(sEnv string) bool {
-	return sEnv == EnvMap[EnvLive] || sEnv == EnvMap[EnvLivesh]
+	return sEnv == EnvMap[EnvLive]
 }
 
 func GetEnvList() (envList []string) {
 	for _, v := range EnvMap {
 		envList = append(envList, v)
-	}
-
-	return
-}
-
-func GetNonLiveEnvList() (envList []string) {
-	for k, v := range EnvMap {
-		if k == EnvLivesh || k == EnvLive {
-			envList = append(envList, v)
-		}
 	}
 
 	return
