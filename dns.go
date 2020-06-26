@@ -1,7 +1,6 @@
 package sailor
 
 import (
-	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -25,7 +24,7 @@ func SetFQDN(domain string) string {
 	return domain
 }
 
-func QueryDNSSRVRecord(domain string) {
+func QueryDNSSRVRecord(domain string) *dns.SRV {
 	c := dns.Client{Timeout: DNSTimeout * time.Second}
 
 	m := dns.Msg{}
@@ -34,18 +33,20 @@ func QueryDNSSRVRecord(domain string) {
 	r, _, err := c.Exchange(&m, DefaultDNSServer)
 	if err != nil {
 		log.Fatalf("query SRV record failed, domain: %s, err: %s", domain, err)
-		return
+		return nil
 	}
 
 	for _, ans := range r.Answer {
 		record, isType := ans.(*dns.SRV)
 		if isType {
-			fmt.Println(record.Target, record.Port)
+			return record
 		}
 	}
+
+	return nil
 }
 
-func QueryDNSCnameRecord(domain string) {
+func QueryDNSCnameRecord(domain string) *dns.CNAME {
 	c := dns.Client{Timeout: DNSTimeout * time.Second}
 
 	m := dns.Msg{}
@@ -54,13 +55,15 @@ func QueryDNSCnameRecord(domain string) {
 	r, _, err := c.Exchange(&m, DefaultDNSServer)
 	if err != nil {
 		log.Fatalf("query SRV record failed, domain: %s, err: %s", domain, err)
-		return
+		return nil
 	}
 
 	for _, ans := range r.Answer {
 		record, isType := ans.(*dns.CNAME)
 		if isType {
-			fmt.Println(record.Target)
+			return record
 		}
 	}
+
+	return nil
 }

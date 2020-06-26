@@ -1,13 +1,16 @@
 package sailor
 
 import (
+	"log"
 	"testing"
 )
 
 func TestQueryDNSSRVRecord(t *testing.T) {
-	QueryDNSSRVRecord("hello.airdb.me")
+	rr := QueryDNSSRVRecord("hello.airdb.me")
+	log.Println(rr.Target, rr.Port)
 }
 
 func TestQueryDNSCnameRecord(t *testing.T) {
-	QueryDNSCnameRecord("airdb.dev")
+	rr := QueryDNSCnameRecord("airdb.dev")
+	log.Println(rr.Target)
 }
