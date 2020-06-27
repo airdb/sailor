@@ -3,13 +3,14 @@ module github.com/airdb/sailor
 go 1.14
 
 require (
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.4.0
 	github.com/go-sql-driver/mysql v1.4.1
-	github.com/golangci/golangci-lint v1.21.0 // indirect
+	github.com/golang/protobuf v1.3.2 // indirect
 	github.com/jinzhu/gorm v1.9.11
-	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644
-	github.com/spf13/viper v1.4.0
-	github.com/stretchr/testify v1.4.0
+	github.com/lib/pq v1.2.0 // indirect
+	github.com/miekg/dns v1.1.29
+	github.com/stretchr/testify v1.4.0 // indirect
 	github.com/swaggo/gin-swagger v1.2.0
+	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
+	gopkg.in/yaml.v2 v2.2.4 // indirect
 )
