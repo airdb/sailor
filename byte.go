@@ -1,4 +1,4 @@
-package byteutils
+package sailor
 
 import (
 	"reflect"
@@ -10,7 +10,7 @@ import (
 //
 // Note it may break if string and/or slice header will change
 // in the future go versions.
-func ToString(b []byte) string {
+func BytesToString(b []byte) string {
 	return *(*string)(unsafe.Pointer(&b))
 }
 
@@ -18,7 +18,7 @@ func ToString(b []byte) string {
 //
 // Note it may break if string and/or slice header will change
 // in the future go versions.
-func ToBytes(s string) []byte {
+func StringToBytes(s string) []byte {
 	sh := (*reflect.StringHeader)(unsafe.Pointer(&s))
 	bh := reflect.SliceHeader{
 		Data: sh.Data,
