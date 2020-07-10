@@ -3,6 +3,7 @@ package dbutils
 import (
 	"log"
 	"os"
+	"strings"
 	"sync"
 	"sync/atomic"
 
@@ -24,6 +25,10 @@ func InitDB(dbNames []string) {
 
 	for _, dbName := range dbNames {
 		gdbc := os.Getenv(dbName)
+
+		if !strings.Contains(gdbc, "?") {
+			gdbc += "?charset=utf8&parseTime=True"
+		}
 
 		conn, err := gorm.Open("mysql", gdbc)
 		if err != nil {
