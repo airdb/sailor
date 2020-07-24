@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/miekg/dns"
+	"golang.org/x/net/publicsuffix"
 )
 
 const (
@@ -66,4 +67,34 @@ func QueryDNSCnameRecord(domain string) *dns.CNAME {
 	}
 
 	return nil
+}
+
+func ToDomainWithDot(domain string) string {
+	if !strings.HasSuffix(domain, ".") {
+		domain += "."
+	}
+
+	return domain
+}
+
+func TrimDomainDot(domain string) string {
+	return strings.TrimSuffix(domain, DelimiterDot)
+}
+
+func GetRootDomain(name string) (string, error) {
+	name = TrimDomainDot(name)
+
+	rootDomain, err := publicsuffix.EffectiveTLDPlusOne(name)
+	if err != nil {
+		return "", err
+	}
+
+	return rootDomain, nil
+}
+
+func GetDomainSuffix(name string) string {
+	name = TrimDomainDot(name)
+	publicSuffix, _ := publicsuffix.PublicSuffix(name)
+
+	return publicSuffix
 }
