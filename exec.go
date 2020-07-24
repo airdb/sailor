@@ -1,9 +1,11 @@
 package sailor
 
 import (
+	"bytes"
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 func Exec(bin string, args []string) {
@@ -30,4 +32,24 @@ func Exec(bin string, args []string) {
 			os.Exit(exitError.ExitCode())
 		}
 	}
+}
+
+func ExecCommand(bin string, args []string) (string, error) {
+	binPath, err := exec.LookPath(bin)
+	if err != nil {
+		return "", err
+	}
+
+	cmd := exec.Command(binPath, args...)
+
+	var out bytes.Buffer
+
+	cmd.Stdout = &out
+
+	err = cmd.Run()
+	if err != nil {
+		return "", err
+	}
+
+	return strings.Trim(out.String(), "\n"), nil
 }

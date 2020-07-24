@@ -11,5 +11,6 @@ require (
 	github.com/miekg/dns v1.1.29
 	github.com/pkg/errors v0.8.1
 	github.com/swaggo/gin-swagger v1.2.0
+	golang.org/x/net v0.0.0-20190923162816-aa69164e4478
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 )
