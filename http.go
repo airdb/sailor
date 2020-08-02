@@ -3,6 +3,8 @@ package sailor
 import (
 	"bytes"
 	"encoding/json"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -110,6 +112,8 @@ func HTTPRequestWithClient(client *http.Client,
 			req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 		}
 
+		// The RawQuery should binding on `url`.  Like follow:
+		// Query string `url:"q"`
 		body, err := query.Values(requestInterface.GetBody())
 		if err != nil {
 			return err
@@ -154,6 +158,16 @@ func DoRequest(client *http.Client,
 		return err
 	}
 	defer resp.Body.Close()
+
+	bodyBytes, _ := ioutil.ReadAll(resp.Body)
+
+	// For debug.
+	debug := false
+	if debug {
+		log.Println(string(bodyBytes))
+	}
+
+	resp.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
 
 	switch resp.StatusCode {
 	case http.StatusOK:
