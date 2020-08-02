@@ -15,6 +15,8 @@ import (
 )
 
 type HTTPClient struct {
+	debug bool
+
 	url    string
 	method string
 	// Implement `curl --data-urlencode`
@@ -22,6 +24,14 @@ type HTTPClient struct {
 	headers map[string]string
 
 	body interface{}
+}
+
+func (client *HTTPClient) SetDebug() {
+	client.debug = true
+}
+
+func (client *HTTPClient) GetDebug() bool {
+	return client.debug
 }
 
 func (client *HTTPClient) SetURL(url string) {
@@ -65,6 +75,9 @@ func (client *HTTPClient) GetBody() interface{} {
 }
 
 type RequestInterface interface {
+	SetDebug()
+	GetDebug() bool
+
 	SetURL(string)
 	GetURL() string
 
@@ -162,8 +175,7 @@ func DoRequest(client *http.Client,
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
 
 	// For debug.
-	debug := false
-	if debug {
+	if requestInterface.GetDebug() {
 		log.Println(string(bodyBytes))
 	}
 
