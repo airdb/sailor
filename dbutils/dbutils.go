@@ -57,13 +57,6 @@ func InitDB(dbNames []string) {
 			log.Printf("Connect to %s successfully.\n", dbName)
 		}
 
-		// conn.LogMode(true)
-		// conn.SingularTable(true)
-
-		// gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
-		// 	return defaultTableName + "_tab"
-		// }
-
 		dbs.Store(dbName, conn)
 	}
 
