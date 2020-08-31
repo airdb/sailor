@@ -3,6 +3,8 @@ package sailor
 import (
 	"bytes"
 	"encoding/json"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -13,6 +15,8 @@ import (
 )
 
 type HTTPClient struct {
+	debug bool
+
 	url    string
 	method string
 	// Implement `curl --data-urlencode`
@@ -20,6 +24,14 @@ type HTTPClient struct {
 	headers map[string]string
 
 	body interface{}
+}
+
+func (client *HTTPClient) SetDebug() {
+	client.debug = true
+}
+
+func (client *HTTPClient) GetDebug() bool {
+	return client.debug
 }
 
 func (client *HTTPClient) SetURL(url string) {
@@ -63,6 +75,9 @@ func (client *HTTPClient) GetBody() interface{} {
 }
 
 type RequestInterface interface {
+	SetDebug()
+	GetDebug() bool
+
 	SetURL(string)
 	GetURL() string
 
@@ -110,6 +125,8 @@ func HTTPRequestWithClient(client *http.Client,
 			req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 		}
 
+		// The RawQuery should binding on `url`.  Like follow:
+		// Query string `url:"q"`
 		body, err := query.Values(requestInterface.GetBody())
 		if err != nil {
 			return err
@@ -154,6 +171,15 @@ func DoRequest(client *http.Client,
 		return err
 	}
 	defer resp.Body.Close()
+
+	bodyBytes, _ := ioutil.ReadAll(resp.Body)
+
+	// For debug.
+	if requestInterface.GetDebug() {
+		log.Println(string(bodyBytes))
+	}
+
+	resp.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
 
 	switch resp.StatusCode {
 	case http.StatusOK:
