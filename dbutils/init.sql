@@ -1,4 +1,6 @@
-USE `airdb`;
+CREATE DATABASE `test`;
+
+USE `test`;
 
 CREATE TABLE `user_tab` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,

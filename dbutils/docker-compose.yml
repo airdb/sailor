@@ -9,8 +9,8 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=airdb
-      - MYSQL_DATABASE=airdb
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=test
       - MYSQL_USER=airdb
       - MYSQL_PASSWORD=airdb
       - MYSQL_ROOT_HOST=%

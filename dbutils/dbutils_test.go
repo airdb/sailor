@@ -14,3 +14,11 @@ func TestInitDB(t *testing.T) {
 	dbs := []string{"testdb", "testdb1"}
 	dbutils.InitDB(dbs)
 }
+
+/*
+	data := make(map[string]interface{})
+	data["user_id"] = 0
+	data["status"] = "ok"
+	data["updated_at"] = uint(time.Now().Unix())
+ 	db := tx.Updates(data)
+*/
