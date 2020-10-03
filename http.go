@@ -26,6 +26,11 @@ type HTTPClient struct {
 	body interface{}
 }
 
+const (
+	UserAgent    = "sailor-agent/1.0.0"
+	UserAgentKey = "User-Agent"
+)
+
 func (client *HTTPClient) SetDebug() {
 	client.debug = true
 }
@@ -74,6 +79,14 @@ func (client *HTTPClient) GetBody() interface{} {
 	return client.body
 }
 
+func (client *HTTPClient) SetUserAgent(ua string) {
+	client.headers[UserAgentKey] = ua
+}
+
+func (client *HTTPClient) GetUserAgent() string {
+	return client.headers[UserAgentKey]
+}
+
 type RequestInterface interface {
 	SetDebug()
 	GetDebug() bool
@@ -92,6 +105,9 @@ type RequestInterface interface {
 
 	SetBody(interface{})
 	GetBody() interface{}
+
+	SetUserAgent(string)
+	GetUserAgent() string
 }
 
 type ResponseInterface interface{}
@@ -109,7 +125,7 @@ func HTTPRequestWithClient(client *http.Client,
 	responseInterface ResponseInterface,
 ) error {
 	switch requestInterface.GetMethod() {
-	case http.MethodGet:
+	case "", http.MethodGet:
 		var r *strings.Reader
 
 		if requestInterface.GetValues() != nil {
@@ -164,6 +180,11 @@ func DoRequest(client *http.Client,
 ) error {
 	for headerKey, headerValue := range requestInterface.GetHeaders() {
 		req.Header.Set(headerKey, headerValue)
+	}
+
+	headers := requestInterface.GetHeaders()
+	if headers[UserAgentKey] == "" {
+		req.Header.Set(UserAgentKey, UserAgent)
 	}
 
 	resp, err := client.Do(req)
