@@ -13,8 +13,10 @@ const (
 	DefaultDNSServer = "8.8.8.8:53"
 )
 
-var DNSTimeout time.Duration = 3
-var DNSRetry int = 3
+var (
+	DNSTimeout time.Duration = 3
+	DNSRetry   int           = 3
+)
 
 // FQDN: A fully qualified domain name.
 func SetFQDN(domain string) string {
@@ -34,6 +36,7 @@ func QueryDNSSRVRecord(domain string) *dns.SRV {
 	r, _, err := c.Exchange(&m, DefaultDNSServer)
 	if err != nil {
 		log.Fatalf("query SRV record failed, domain: %s, err: %s", domain, err)
+
 		return nil
 	}
 
@@ -56,6 +59,7 @@ func QueryDNSCnameRecord(domain string) *dns.CNAME {
 	r, _, err := c.Exchange(&m, DefaultDNSServer)
 	if err != nil {
 		log.Fatalf("query SRV record failed, domain: %s, err: %s", domain, err)
+
 		return nil
 	}
 

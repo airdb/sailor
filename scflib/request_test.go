@@ -3,7 +3,7 @@ package scflib_test
 import (
 	"testing"
 
-	"github.com/airdb/scf-mina-api/scflib"
+	"github.com/airdb/sailor/scflib"
 	"github.com/tencentyun/scf-go-lib/events"
 )
 

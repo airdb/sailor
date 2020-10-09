@@ -6,10 +6,14 @@ linters-settings:
   gocritic:
     disabled-checks:
       - singleCaseSwitch
+  funlen:
+    lines: 100
+    statements: 50
 
 linters:
   disable:
     - gochecknoglobals
-    - gomnd
     - testpackage
+    #- gomnd
+    - exhaustive
   enable-all: true

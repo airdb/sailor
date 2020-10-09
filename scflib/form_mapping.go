@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/airdb/scf-mina-api/scflib/json"
+	"github.com/airdb/sailor/scflib/json"
 	"github.com/pkg/errors"
 )
 
@@ -52,6 +52,7 @@ func (form formSource) TrySet(value reflect.Value,
 
 func mappingByPtr(ptr interface{}, setter setter, tag string) error {
 	_, err := mapping(reflect.ValueOf(ptr), emptyField, setter, tag)
+
 	return err
 }
 
@@ -306,6 +307,7 @@ func setTimeField(val string, structField reflect.StructField, value reflect.Val
 
 	if val == "" {
 		value.Set(reflect.ValueOf(time.Time{}))
+
 		return nil
 	}
 

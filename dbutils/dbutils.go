@@ -1,8 +1,6 @@
 package dbutils
 
 import (
-	"gorm.io/gorm/logger"
-	"gorm.io/gorm/schema"
 	"log"
 	"os"
 	"strings"
@@ -12,11 +10,15 @@ import (
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"gorm.io/gorm/schema"
 )
 
-var dbs sync.Map
-var hasInit int32
-var hasPend sync.Mutex
+var (
+	dbs     sync.Map
+	hasInit int32
+	hasPend sync.Mutex
+)
 
 func InitDB(dbNames []string) {
 	if atomic.LoadInt32(&hasInit) == 1 {
@@ -62,6 +64,7 @@ func InitDB(dbNames []string) {
 
 	if atomic.LoadInt32(&hasInit) == 1 {
 		log.Println("cocurrent_between_coroutines")
+
 		return
 	}
 
