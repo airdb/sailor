@@ -8,13 +8,14 @@ import (
 )
 
 const (
-	FilePerm600 os.FileMode = 0600 // For secret files.
-	FilePerm644 os.FileMode = 0644 // For normal files.
-	FilePerm755 os.FileMode = 0755 // For directory or execute files.
+	FilePerm600 os.FileMode = 0o600 // For secret files.
+	FilePerm644 os.FileMode = 0o644 // For normal files.
+	FilePerm755 os.FileMode = 0o755 // For directory or execute files.
 )
 
 func Exists(path string) bool {
 	_, err := os.Stat(path)
+
 	return !os.IsNotExist(err)
 }
 

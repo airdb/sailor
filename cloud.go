@@ -4,6 +4,6 @@ const (
 	CloudPlatformAWS    = "aws"
 	CloudPlatformAliyun = "aliyun"
 
-	// The name from github. XD
+	// The name from github, XD.
 	CloudPlatformTencent = "tencentyun"
 )

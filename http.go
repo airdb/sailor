@@ -2,6 +2,7 @@ package sailor
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"io/ioutil"
 	"log"
@@ -112,8 +113,10 @@ type RequestInterface interface {
 
 type ResponseInterface interface{}
 
+var timeout time.Duration = 10
+
 var DefaultClient = &http.Client{
-	Timeout: 60 * time.Second,
+	Timeout: timeout * time.Second,
 }
 
 func HTTPRequest(requestInterface RequestInterface, responseInterface ResponseInterface) error {
@@ -132,7 +135,10 @@ func HTTPRequestWithClient(client *http.Client,
 			r = strings.NewReader(requestInterface.GetValues().Encode())
 		}
 
-		req, err := http.NewRequest(requestInterface.GetMethod(), requestInterface.GetURL(), r)
+		req, err := http.NewRequestWithContext(context.Background(),
+			requestInterface.GetMethod(),
+			requestInterface.GetURL(),
+			r)
 		if err != nil {
 			return err
 		}
@@ -159,7 +165,10 @@ func HTTPRequestWithClient(client *http.Client,
 			return err
 		}
 
-		req, err := http.NewRequest(requestInterface.GetMethod(), requestInterface.GetURL(), bytes.NewBuffer(payload))
+		req, err := http.NewRequestWithContext(context.Background(),
+			requestInterface.GetMethod(),
+			requestInterface.GetURL(),
+			bytes.NewBuffer(payload))
 		if err != nil {
 			return err
 		}
