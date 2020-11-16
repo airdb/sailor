@@ -37,11 +37,6 @@ jobs:
           echo ${{ steps.bump_version.outputs.tag }}
           echo ${{ steps.bump_version.outputs.new_tag }}
           echo ${{ steps.bump_version.outputs.part }}
-          make release VERSION=${{ steps.bump_version.outputs.tag }}
-          zip -r adb.zip release
-
-          sha256sum release/*
-          echo "::set-output name=sha25sum:: $(sha256sum release/*)"
 
       - name: Create Release
         id: create_release
