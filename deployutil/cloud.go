@@ -1,4 +1,4 @@
-package sailor
+package deployutil
 
 const (
 	CloudPlatformAWS    = "aws"

@@ -1,6 +1,7 @@
-package sailor
+package fileutil
 
 import (
+	"airdb.io/airdb/sailor/byteutil"
 	"io/ioutil"
 	"log"
 	"os"
@@ -46,7 +47,7 @@ func EnsureFileExists(path string) {
 func WriteFile(path string, content string) error {
 	EnsureFileExists(path)
 
-	err := ioutil.WriteFile(path, StringToBytes(content), FilePerm644)
+	err := ioutil.WriteFile(path, byteutil.StringToBytes(content), FilePerm644)
 	if err != nil {
 		return err
 	}
