@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"airdb.io/airdb/airdb/sailor/scflib/json"
+	"airdb.io/airdb/sailor/scflib/json"
 	"github.com/pkg/errors"
 )
 

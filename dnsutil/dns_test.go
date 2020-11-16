@@ -1,4 +1,4 @@
-package sailor
+package dnsutil
 
 import (
 	"log"

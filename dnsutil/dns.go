@@ -1,10 +1,11 @@
-package sailor
+package dnsutil
 
 import (
 	"log"
 	"strings"
 	"time"
 
+	"airdb.io/airdb/sailor"
 	"github.com/miekg/dns"
 	"golang.org/x/net/publicsuffix"
 )
@@ -82,7 +83,7 @@ func ToDomainWithDot(domain string) string {
 }
 
 func TrimDomainDot(domain string) string {
-	return strings.TrimSuffix(domain, DelimiterDot)
+	return strings.TrimSuffix(domain, sailor.DelimiterDot)
 }
 
 func GetRootDomain(name string) (string, error) {

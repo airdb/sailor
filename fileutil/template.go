@@ -1,6 +1,7 @@
-package sailor
+package fileutil
 
 import (
+	"airdb.io/airdb/sailor/byteutil"
 	"bytes"
 	"io"
 	"io/ioutil"
@@ -27,7 +28,7 @@ func TemplateGenerateFileFromReader(reader io.Reader, dstPath string, data inter
 		return err
 	}
 
-	content, err := TemplateGenerateString(BytesToString(b), data)
+	content, err := TemplateGenerateString(byteutil.BytesToString(b), data)
 	if err != nil {
 		return err
 	}
