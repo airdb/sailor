@@ -17,3 +17,4 @@ Airdb reserved the error code range from 20000 to 24999 for defined Error Codes.
 ## Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/airdb/sailor.svg)](https://starchart.cc/airdb/sailor)
+
