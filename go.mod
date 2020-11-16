@@ -1,4 +1,4 @@
-module github.com/airdb/sailor
+module airdb.io/airdb/sailor
 
 go 1.14
 

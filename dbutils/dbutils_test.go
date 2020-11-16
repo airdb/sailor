@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/airdb/sailor/dbutils"
+	"airdb.io/airdb/sailor/dbutils"
 )
 
 func TestInitDB(t *testing.T) {
