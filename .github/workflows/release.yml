@@ -50,6 +50,5 @@ jobs:
             Changes in this Release
             - First Change
             - Second Change
-            - ${{ steps.build.outputs.sha25sum }}
           draft: false
           prerelease: false
