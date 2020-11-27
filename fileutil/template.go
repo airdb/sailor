@@ -1,11 +1,12 @@
 package fileutil
 
 import (
-	"airdb.io/airdb/sailor/byteutil"
 	"bytes"
 	"io"
 	"io/ioutil"
 	"text/template"
+
+	"airdb.io/airdb/sailor/byteutil"
 )
 
 func TemplateGenerateString(str string, data interface{}) (string, error) {

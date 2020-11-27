@@ -1,11 +1,11 @@
-package sailor
+package process
 
 import (
 	"fmt"
 	"strings"
 )
 
-type ProcessBar struct {
+type Bar struct {
 	percent int64  // 百分比
 	cur     int64  // 当前进度位置
 	total   int64  // 总进度
@@ -13,7 +13,7 @@ type ProcessBar struct {
 	graph   string // 显示符号
 }
 
-func (bar *ProcessBar) NewOption(start, total int64) {
+func (bar *Bar) NewOption(start, total int64) {
 	bar.cur = start
 	bar.total = total
 
@@ -29,16 +29,16 @@ func (bar *ProcessBar) NewOption(start, total int64) {
 
 const percentage = 100
 
-func (bar *ProcessBar) getPercent() int64 {
+func (bar *Bar) getPercent() int64 {
 	return int64(float32(bar.cur) / float32(bar.total) * percentage)
 }
 
-func (bar *ProcessBar) NewOptionWithGraph(start, total int64, graph string) {
+func (bar *Bar) NewOptionWithGraph(start, total int64, graph string) {
 	bar.graph = graph
 	bar.NewOption(start, total)
 }
 
-func (bar *ProcessBar) Play(cur int64) {
+func (bar *Bar) Play(cur int64) {
 	bar.cur = cur
 	last := bar.percent
 
@@ -52,6 +52,6 @@ func (bar *ProcessBar) Play(cur int64) {
 	bar.rate = strings.TrimSuffix(bar.rate, ">")
 }
 
-func (bar *ProcessBar) Finish() {
+func (bar *Bar) Finish() {
 	fmt.Println()
 }

@@ -1,11 +1,12 @@
 package fileutil
 
 import (
-	"airdb.io/airdb/sailor/byteutil"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+
+	"airdb.io/airdb/sailor/byteutil"
 )
 
 const (
