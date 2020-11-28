@@ -1,4 +1,4 @@
-package sailor
+package osutil
 
 import (
 	"bytes"
