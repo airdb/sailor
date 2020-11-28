@@ -1,8 +1,9 @@
 package osutil_test
 
 import (
-	"airdb.io/airdb/sailor/osutil"
 	"testing"
+
+	"airdb.io/airdb/sailor/osutil"
 )
 
 func TestExec(t *testing.T) {
@@ -16,5 +17,10 @@ func TestExecCommand(t *testing.T) {
 	bin := "echo"
 	args := []string{"test"}
 
-	osutil.ExecCommand(bin, args)
+	out, err := osutil.ExecCommand(bin, args)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Log(out)
 }

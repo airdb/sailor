@@ -1,9 +1,10 @@
 package osutil_test
 
 import (
+	"testing"
+
 	"airdb.io/airdb/sailor/osutil"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestOS(t *testing.T) {
