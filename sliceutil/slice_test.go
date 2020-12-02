@@ -54,3 +54,14 @@ func TestIntersection(t *testing.T) {
 	sections := sliceutil.Intersection(slice1, slice2)
 	is.Equal([]string{"b"}, sections)
 }
+
+func TestToSet(t *testing.T) {
+	is := assert.New(t)
+
+	slice := []string{"a", "b", "b", "c"}
+	result := []string{"a", "b", "c"}
+
+
+	set := sliceutil.ToSet(slice)
+	is.Equal(result, set)
+}

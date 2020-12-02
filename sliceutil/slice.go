@@ -74,3 +74,16 @@ func Intersection(slice1 []string, slice2 []string) []string {
 
 	return res
 }
+
+func ToSet(items []string) (ret []string) {
+	setMap := make(map[string]bool)
+	for _, item := range items {
+		setMap[item] = true
+	}
+
+	for item := range setMap {
+		ret = append(ret, item)
+	}
+
+	return
+}
