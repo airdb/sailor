@@ -18,6 +18,7 @@ func BytesToString(b []byte) string {
 //
 // Note it may break if string and/or slice header will change
 // in the future go versions.
+// nolint: govet
 func StringToBytes(s string) []byte {
 	sh := (*reflect.StringHeader)(unsafe.Pointer(&s))
 	bh := reflect.SliceHeader{

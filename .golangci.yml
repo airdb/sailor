@@ -14,6 +14,10 @@ linters:
   disable:
     - gochecknoglobals
     - testpackage
-    #- gomnd
+    - gomnd
     - exhaustive
+    - forbidigo
+    - exhaustivestruct
+    - paralleltest
+    - wrapcheck
   enable-all: true

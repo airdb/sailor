@@ -15,8 +15,8 @@ const (
 )
 
 var (
-	DNSTimeout time.Duration = 3
-	DNSRetry   int           = 3
+	DNSTimeout = 3
+	DNSRetry   = 3
 )
 
 // FQDN: A fully qualified domain name.
@@ -29,7 +29,7 @@ func SetFQDN(domain string) string {
 }
 
 func QueryDNSSRVRecord(domain string) *dns.SRV {
-	c := dns.Client{Timeout: DNSTimeout * time.Second}
+	c := dns.Client{Timeout: time.Duration(DNSTimeout) * time.Second}
 
 	m := dns.Msg{}
 	m.SetQuestion(SetFQDN(domain), dns.TypeSRV)
@@ -52,7 +52,7 @@ func QueryDNSSRVRecord(domain string) *dns.SRV {
 }
 
 func QueryDNSCnameRecord(domain string) *dns.CNAME {
-	c := dns.Client{Timeout: DNSTimeout * time.Second}
+	c := dns.Client{Timeout: time.Duration(DNSTimeout) * time.Second}
 
 	m := dns.Msg{}
 	m.SetQuestion(SetFQDN(domain), dns.TypeCNAME)

@@ -2,6 +2,7 @@ package sailor
 
 import (
 	"bytes"
+	"errors"
 	"log"
 	"os"
 	"os/exec"
@@ -28,7 +29,8 @@ func Exec(bin string, args []string) {
 	if err != nil {
 		log.Println("exec failed, err: ", err)
 
-		if exitError, ok := err.(*exec.ExitError); ok {
+		var exitError *exec.ExitError
+		if errors.As(err, &exitError) {
 			os.Exit(exitError.ExitCode())
 		}
 	}

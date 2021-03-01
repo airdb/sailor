@@ -113,16 +113,17 @@ type RequestInterface interface {
 
 type ResponseInterface interface{}
 
-var timeout time.Duration = 10
+var timeout = 10
 
 var DefaultClient = &http.Client{
-	Timeout: timeout * time.Second,
+	Timeout: time.Duration(timeout) * time.Second,
 }
 
 func HTTPRequest(requestInterface RequestInterface, responseInterface ResponseInterface) error {
 	return HTTPRequestWithClient(DefaultClient, requestInterface, responseInterface)
 }
 
+// nolint:cyclop
 func HTTPRequestWithClient(client *http.Client,
 	requestInterface RequestInterface,
 	responseInterface ResponseInterface,
