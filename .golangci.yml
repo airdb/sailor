@@ -16,4 +16,5 @@ linters:
     - testpackage
     #- gomnd
     - exhaustive
+    - forbidigo
   enable-all: true

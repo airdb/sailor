@@ -61,7 +61,6 @@ func TestToSet(t *testing.T) {
 	slice := []string{"a", "b", "b", "c"}
 	result := []string{"a", "b", "c"}
 
-
 	set := sliceutil.ToSet(slice)
 	is.Equal(result, set)
 }

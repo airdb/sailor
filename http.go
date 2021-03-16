@@ -16,6 +16,10 @@ import (
 )
 
 type HTTPClient struct {
+	ctx      context.Context
+	domain   string
+	endpoint string
+
 	debug bool
 
 	url    string
@@ -38,6 +42,30 @@ func (client *HTTPClient) SetDebug() {
 
 func (client *HTTPClient) GetDebug() bool {
 	return client.debug
+}
+
+func (client *HTTPClient) SetContext(ctx context.Context) {
+	client.ctx = ctx
+}
+
+func (client *HTTPClient) GetContext() context.Context {
+	return client.ctx
+}
+
+func (client *HTTPClient) SetDomain(domain string) {
+	client.domain = domain
+}
+
+func (client *HTTPClient) GetDomain() string {
+	return client.domain
+}
+
+func (client *HTTPClient) SetEndpoint(endpoint string) {
+	client.endpoint = endpoint
+}
+
+func (client *HTTPClient) GetEndpoint() string {
+	return client.endpoint
 }
 
 func (client *HTTPClient) SetURL(url string) {
@@ -92,6 +120,15 @@ type RequestInterface interface {
 	SetDebug()
 	GetDebug() bool
 
+	SetContext(ctx context.Context)
+	GetContext() context.Context
+
+	SetDomain(string)
+	GetDomain() string
+
+	SetEndpoint(string)
+	GetEndpoint() string
+
 	SetURL(string)
 	GetURL() string
 
@@ -113,10 +150,10 @@ type RequestInterface interface {
 
 type ResponseInterface interface{}
 
-var timeout time.Duration = 10
+var timeout = 10
 
 var DefaultClient = &http.Client{
-	Timeout: timeout * time.Second,
+	Timeout: time.Duration(timeout) * time.Second,
 }
 
 func HTTPRequest(requestInterface RequestInterface, responseInterface ResponseInterface) error {
