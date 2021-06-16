@@ -1,8 +1,6 @@
-package version
+package handlers
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 
@@ -11,6 +9,6 @@ import (
 
 func RegisterSwagger(router *gin.RouterGroup) {
 	router.GET("/swagger/*any",
-		ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.URL(fmt.Sprintf("%v/swagger/doc.json", router.BasePath()))),
+		ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.URL("./doc.json")),
 	)
 }

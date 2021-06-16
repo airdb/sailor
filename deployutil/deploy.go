@@ -19,6 +19,13 @@ const (
 	DeployPolicyBlack
 )
 
+const (
+	DeployStageDev     = "dev"
+	DeployStageTest    = "test"
+	DeployStagePre     = "pre"
+	DeployStageRelease = "release"
+)
+
 var DeployPolicyMap = map[DeployPolicy]string{
 	// Blue strategy serves about at 0-20% traffic.
 	DeployPolicyBlue: "blue",
