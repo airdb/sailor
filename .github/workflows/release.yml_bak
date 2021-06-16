@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@master
+        with:
+          fetch-depth: '0'
+
+      - name: Use Golang
+        uses: actions/setup-go@v1
+        with:
+          go-version: "1.15"
+
+      - name: Test
+        run: go version
+
+      - name: Bump version and push tag
+        id: bump_version
+        uses: anothrNick/github-tag-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+          WITH_V: true
+
+      - name: Build
+        id: build
+        run: |
+          echo ${{ steps.bump_version.outputs.tag }}
+          echo ${{ steps.bump_version.outputs.new_tag }}
+          echo ${{ steps.bump_version.outputs.part }}
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.bump_version.outputs.tag }}
+          release_name: Release ${{ steps.bump_version.outputs.tag }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
