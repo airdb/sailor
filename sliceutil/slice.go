@@ -88,9 +88,8 @@ func ToSet(items []string) (ret []string) {
 	return
 }
 
-
 func LastString(ss []string) string {
-    return ss[len(ss)-1]
+	return ss[len(ss)-1]
 }
 
 func LastStringWithSplit(str, delimiter string) string {
