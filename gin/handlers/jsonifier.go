@@ -1,4 +1,4 @@
-package version
+package handlers
 
 import (
 	"net/http"
