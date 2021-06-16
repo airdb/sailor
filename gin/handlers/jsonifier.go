@@ -8,7 +8,7 @@ import (
 
 type Response struct {
 	Success bool        `json:"success"`
-	RetCode uint        `json:"ret_code"`
+	RetCode uint        `json:"ret_code,omitempty"`
 	Message interface{} `json:"message,omitempty"`
 	Data    interface{} `json:"data,omitempty"`
 }
