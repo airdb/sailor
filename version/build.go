@@ -5,6 +5,8 @@ import (
 	"os"
 	"runtime"
 	"time"
+
+	"github.com/airdb/sailor/sliceutil"
 )
 
 // Build version info.
@@ -45,4 +47,8 @@ func (info *BuildInfo) ToString() string {
 	}
 
 	return string(out)
+}
+
+func (info *BuildInfo) ToProject() string {
+	return sliceutil.LastStringWithSplit(info.Repo, "/")
 }
