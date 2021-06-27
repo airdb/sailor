@@ -28,6 +28,14 @@ var (
 	CreatedAt time.Time
 )
 
+func InitUptime() {
+	// Init the loc.
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+
+	// Set timezone.
+	CreatedAt = time.Now().In(loc)
+}
+
 func GetBuildInfo() *BuildInfo {
 	return &BuildInfo{
 		GoVersion: runtime.Version(),
