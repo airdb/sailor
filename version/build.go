@@ -18,6 +18,7 @@ type BuildInfo struct {
 	Version   string
 	Build     string
 	BuildTime string
+	Uptime    string
 	CreatedAt time.Time
 }
 
@@ -27,6 +28,7 @@ var (
 	Version   string
 	Build     string
 	BuildTime string
+	Uptime    string
 	CreatedAt time.Time
 )
 
@@ -52,6 +54,7 @@ func GetBuildInfo() *BuildInfo {
 		Build:     Build,
 		BuildTime: BuildTime,
 		CreatedAt: CreatedAt,
+		Uptime:    time.Since(CreatedAt).String(),
 	}
 }
 

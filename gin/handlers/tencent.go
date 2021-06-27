@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"os"
 
 	"github.com/airdb/sailor/deployutil"
 	"github.com/gin-gonic/gin"
@@ -20,7 +19,7 @@ func Handler(ctx context.Context, req events.APIGatewayRequest) (events.APIGatew
 }
 
 func RunTencentServerless(r *gin.Engine) {
-	if os.Getenv("env") == deployutil.DeployStageDev {
+	if deployutil.GetDeployStage() == deployutil.DeployStageDev {
 		defaultAddr := ":8081"
 		err := r.Run(defaultAddr)
 		if err != nil {
