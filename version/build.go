@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/airdb/sailor/deployutil"
 	"github.com/airdb/sailor/sliceutil"
 )
 
@@ -21,6 +22,7 @@ type BuildInfo struct {
 }
 
 var (
+	Env       string
 	Repo      string
 	Version   string
 	Build     string
@@ -28,18 +30,23 @@ var (
 	CreatedAt time.Time
 )
 
-func InitUptime() {
+func Init() {
 	// Init the loc.
 	loc, _ := time.LoadLocation("Asia/Shanghai")
 
 	// Set timezone.
 	CreatedAt = time.Now().In(loc)
+
+	Env = os.Getenv("ENV")
+	if Env == "" {
+		Env = deployutil.DeployStageDev
+	}
 }
 
 func GetBuildInfo() *BuildInfo {
 	return &BuildInfo{
 		GoVersion: runtime.Version(),
-		Env:       os.Getenv("ENV"),
+		Env:       Env,
 		Repo:      Repo,
 		Version:   Version,
 		Build:     Build,
