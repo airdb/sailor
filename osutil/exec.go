@@ -52,11 +52,11 @@ func ExecCommand(bin string, args []string) (string, error) {
 	return strings.Trim(out.String(), "\n"), nil
 }
 
-const CommandTimeout = 10
+// const CommandTimeout = 10
 
-func CommandContext(binPath string, args []string) (string, error) {
+func CommandContext(timeout int, binPath string, args []string) (string, error) {
 	// Create a new context and add a timeout to it
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*CommandTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(timeout))
 	defer cancel() // The cancel should be deferred so resources are cleaned up
 
 	// Create the command with our context
