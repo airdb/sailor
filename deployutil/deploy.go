@@ -71,3 +71,11 @@ func GetDeployStage() string {
 
 	return stage
 }
+
+func IsStageDev() bool {
+	return GetDeployStage() == DeployStageDev
+}
+
+func IsStageTest() bool {
+	return GetDeployStage() == DeployStageTest
+}
