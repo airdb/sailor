@@ -29,8 +29,8 @@ const (
 )
 
 var DefaultDBs = []string{
-	"MainDSNWrite",
-	"MainDSNRead",
+	MainDSNWrite,
+	MainDSNRead,
 }
 
 func InitDefaultDB() {
@@ -60,6 +60,14 @@ func InitDB(dbNames []string) {
 	}
 
 	atomic.StoreInt32(&hasInit, 1)
+}
+
+func WriteDefaultDB() *gorm.DB {
+	return DB(MainDSNWrite)
+}
+
+func ReadDefaultDB() *gorm.DB {
+	return DB(MainDSNRead)
 }
 
 func WriteDB(name string) *gorm.DB {
