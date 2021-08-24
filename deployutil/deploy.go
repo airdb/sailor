@@ -1,6 +1,9 @@
 package deployutil
 
-import "strings"
+import (
+	"os"
+	"strings"
+)
 
 const (
 	CloudPlatformAWS    = "aws"
@@ -57,4 +60,22 @@ func ToEnv(sPolicy string) DeployPolicy {
 
 	// Fallback to default if nothing else works.
 	return DeployPolicyBlue
+}
+
+func GetDeployStage() string {
+	stage := os.Getenv("env")
+
+	if stage == "" {
+		stage = DeployStageDev
+	}
+
+	return stage
+}
+
+func IsStageDev() bool {
+	return GetDeployStage() == DeployStageDev
+}
+
+func IsStageTest() bool {
+	return GetDeployStage() == DeployStageTest
 }

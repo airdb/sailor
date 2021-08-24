@@ -1,4 +1,4 @@
-package handlers
+package faas
 
 import (
 	"context"
@@ -18,7 +18,7 @@ func Handler(ctx context.Context, req events.APIGatewayRequest) (events.APIGatew
 	return GinFaas.ProxyWithContext(ctx, req)
 }
 
-func RunTencentServerless(r *gin.Engine) {
+func RunTencentGin(r *gin.Engine) {
 	if deployutil.GetDeployStage() == deployutil.DeployStageDev {
 		defaultAddr := ":8081"
 		err := r.Run(defaultAddr)
