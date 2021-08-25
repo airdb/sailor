@@ -19,7 +19,7 @@ func TestInitDB(t *testing.T) {
 	var users []string
 	// select * from information_schema.user_privileges;
 
-	db := dbutil.WriteDB("MainDSNWrite").Table("information_schema.user_privileges").Select("GRANTEE").Distinct("GRANTEE").Find(&users)
+	db := dbutil.WriteDB(dbutil.MainDSNWrite).Table("information_schema.user_privileges").Select("GRANTEE").Distinct("GRANTEE").Find(&users)
 	if db.Error != nil {
 		panic(db.Error)
 	}
