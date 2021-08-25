@@ -1,7 +1,6 @@
 package dbutil
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -50,8 +49,6 @@ func InitDB(dbNames []string) {
 
 		dbs.Store(dbName, conn)
 	}
-
-	fmt.Println("xxx", dbs)
 
 	if atomic.LoadInt32(&hasInit) == 1 {
 		log.Println("concurrent_between_coroutines")
@@ -107,8 +104,9 @@ func Connect(dbName string) (db *gorm.DB) {
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
 			SlowThreshold: time.Second, // Slow SQL threshold
-			LogLevel:      logger.Info, // Log level
-			Colorful:      false,       // Disable color
+			// LogLevel:      logger.Info, // Log level
+			LogLevel: logger.Silent, // Log level
+			Colorful: false,         // Disable color
 		},
 	)
 
