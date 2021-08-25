@@ -2,16 +2,16 @@ version: '3'
 
 services:
   testdb:
-    image: 'mysql:latest'
+    image: 'mysql:5.7'
     command: --init-file /srv/sql/init.sql
     volumes:
       - ./:/srv/sql/
     ports:
       - "3306:3306"
     environment:
+      - MYSQL_ROOT_HOST=%
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=test
       - MYSQL_USER=airdb
       - MYSQL_PASSWORD=airdb
-      - MYSQL_ROOT_HOST=%
     container_name: testdb
