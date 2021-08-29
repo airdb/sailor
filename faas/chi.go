@@ -5,7 +5,9 @@ import (
 	"net/http"
 
 	"github.com/airdb/sailor/deployutil"
+	"github.com/airdb/sailor/version"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/render"
 	chiadapter "github.com/serverless-plus/tencent-serverless-go/chi"
 	"github.com/serverless-plus/tencent-serverless-go/events"
 	"github.com/serverless-plus/tencent-serverless-go/faas"
@@ -49,4 +51,17 @@ func RunTencentChiWithSwagger(r *chi.Mux) {
 
 	ChiFaas = chiadapter.New(r)
 	faas.Start(HandlerChi)
+}
+
+// VersionHandler - Returns version information
+// @Summary Version handler.
+// @Description Returns version information, like repo, build, runtime, env
+// @Tags version
+// @Accept  json
+// @Produce  json
+// @Success 200 {string} response "api response"
+// @Router / [get]
+func HandleVersion(w http.ResponseWriter, r *http.Request) {
+	render.JSON(w, r, version.GetBuildInfo())
+	w.WriteHeader(http.StatusOK)
 }
