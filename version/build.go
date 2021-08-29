@@ -48,7 +48,7 @@ func Init() {
 func GetBuildInfo() *BuildInfo {
 	return &BuildInfo{
 		GoVersion: runtime.Version(),
-		Env:       Env,
+		Env:       deployutil.GetDeployStage(),
 		Repo:      Repo,
 		Version:   Version,
 		Build:     Build,
