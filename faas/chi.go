@@ -17,10 +17,29 @@ func HandlerChi(ctx context.Context, req events.APIGatewayRequest) (events.APIGa
 	return ChiFaas.ProxyWithContext(ctx, req)
 }
 
+const defaultMainAddr = "0.0.0.0:8081"
+
 func RunTencentChi(r *chi.Mux) {
-	if deployutil.GetDeployStage() == deployutil.DeployStageDev {
-		defaultAddr := ":8081"
-		err := http.ListenAndServe(defaultAddr, r)
+	if deployutil.IsStageDev() {
+		err := http.ListenAndServe(defaultMainAddr, r)
+		if err != nil {
+			panic(err)
+		}
+
+		return
+	}
+
+	ChiFaas = chiadapter.New(r)
+	faas.Start(HandlerChi)
+}
+
+func RunTencentChiWithSwagger(r *chi.Mux) {
+	fs := http.FileServer(http.Dir("docs"))
+	r.Handle("/chi/docs/*", http.StripPrefix("/chi/docs/", fs))
+	r.Handle("/docs/*", http.StripPrefix("/docs/", fs))
+
+	if deployutil.IsStageDev() {
+		err := http.ListenAndServe(defaultMainAddr, r)
 		if err != nil {
 			panic(err)
 		}
