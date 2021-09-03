@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-chi/chi/v5 v5.0.3
+	github.com/go-redis/redis v6.14.2+incompatible
 	github.com/google/go-querystring v1.0.0
 	github.com/miekg/dns v1.1.29
 	github.com/pkg/errors v0.9.1
