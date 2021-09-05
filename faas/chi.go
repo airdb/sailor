@@ -3,6 +3,7 @@ package faas
 import (
 	"context"
 	"net/http"
+	"path/filepath"
 
 	"github.com/airdb/sailor/deployutil"
 	"github.com/airdb/sailor/version"
@@ -35,22 +36,14 @@ func RunTencentChi(r *chi.Mux) {
 	faas.Start(HandlerChi)
 }
 
-func RunTencentChiWithSwagger(r *chi.Mux) {
+func RunTencentChiWithSwagger(r *chi.Mux, project string) {
+	path := filepath.Join("/", project, "docs", "/")
+
 	fs := http.FileServer(http.Dir("docs"))
-	r.Handle("/chi/docs/*", http.StripPrefix("/chi/docs/", fs))
+	r.Handle(path+"*", http.StripPrefix(path, fs))
 	r.Handle("/docs/*", http.StripPrefix("/docs/", fs))
 
-	if deployutil.IsStageDev() {
-		err := http.ListenAndServe(defaultMainAddr, r)
-		if err != nil {
-			panic(err)
-		}
-
-		return
-	}
-
-	ChiFaas = chiadapter.New(r)
-	faas.Start(HandlerChi)
+	RunTencentChi(r)
 }
 
 // VersionHandler - Returns version information
