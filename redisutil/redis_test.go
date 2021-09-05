@@ -15,7 +15,8 @@ func TestNewRedisClient(t *testing.T) {
 	opt := redis.Options{}
 	opt.Addr = "127.0.0.1:6379"
 	opt.DB = 2
+	opt.Password = "airdb"
 
 	redisdb := redisutil.NewClient(&opt)
-	t.Log(redisdb)
+	t.Log(redisdb.Ping())
 }

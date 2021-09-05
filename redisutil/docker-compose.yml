@@ -5,6 +5,7 @@ services:
     platform: linux/amd64
     image: 'redis'
     #command: sleep 3600
+    command: redis-server --requirepass airdb
     volumes:
       - ./:/srv/redis/
     ports:
