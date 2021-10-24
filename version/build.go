@@ -16,6 +16,7 @@ type BuildInfo struct {
 	Env       string
 	Repo      string
 	Version   string
+	Swagger   string `json:"omitempty"`
 	Build     string
 	BuildTime string
 	Uptime    string
@@ -26,6 +27,7 @@ var (
 	Env       string
 	Repo      string
 	Version   string
+	Swagger   string
 	Build     string
 	BuildTime string
 	Uptime    string
@@ -51,6 +53,7 @@ func GetBuildInfo() *BuildInfo {
 		Env:       deployutil.GetDeployStage(),
 		Repo:      Repo,
 		Version:   Version,
+		Swagger:   Swagger,
 		Build:     Build,
 		BuildTime: BuildTime,
 		CreatedAt: CreatedAt,

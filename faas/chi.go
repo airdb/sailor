@@ -32,6 +32,9 @@ func RunTencentChi(r *chi.Mux) {
 		return
 	}
 
+	// Return the default root index.
+	r.Get("/", HandleVersion)
+
 	ChiFaas = chiadapter.New(r)
 	faas.Start(HandlerChi)
 }
@@ -55,6 +58,9 @@ func RunTencentChiWithSwagger(r *chi.Mux, project string) {
 // @Success 200 {string} response "api response"
 // @Router / [get]
 func HandleVersion(w http.ResponseWriter, r *http.Request) {
-	render.JSON(w, r, version.GetBuildInfo())
+	info := version.GetBuildInfo()
+	info.Swagger = "docs/swagger.yaml"
+	render.JSON(w, r, info)
+
 	w.WriteHeader(http.StatusOK)
 }
