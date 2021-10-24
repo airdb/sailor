@@ -42,7 +42,10 @@ func RunTencentChiWithSwagger(r *chi.Mux, project string) {
 	// Return the default root index.
 	r.Get(path, HandleVersion)
 
-	path = filepath.Join("/", project, "docs", "/")
+	path = filepath.Join("/", project, "/")
+	r.Get(path, HandleVersion)
+
+	path = filepath.Join("/", project, "/", "docs", "/")
 
 	fs := http.FileServer(http.Dir("docs"))
 	r.Handle(path+"*", http.StripPrefix(path, fs))
