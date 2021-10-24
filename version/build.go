@@ -16,7 +16,7 @@ type BuildInfo struct {
 	Env       string
 	Repo      string
 	Version   string
-	Swagger   string `json:"omitempty"`
+	Swagger   string `json:"swagger,omitempty"`
 	Build     string
 	BuildTime string
 	Uptime    string

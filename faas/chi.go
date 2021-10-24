@@ -32,15 +32,17 @@ func RunTencentChi(r *chi.Mux) {
 		return
 	}
 
-	// Return the default root index.
-	r.Get("/", HandleVersion)
-
 	ChiFaas = chiadapter.New(r)
 	faas.Start(HandlerChi)
 }
 
 func RunTencentChiWithSwagger(r *chi.Mux, project string) {
-	path := filepath.Join("/", project, "docs", "/")
+	path := filepath.Join("/", project)
+
+	// Return the default root index.
+	r.Get(path, HandleVersion)
+
+	path = filepath.Join("/", project, "docs", "/")
 
 	fs := http.FileServer(http.Dir("docs"))
 	r.Handle(path+"*", http.StripPrefix(path, fs))
