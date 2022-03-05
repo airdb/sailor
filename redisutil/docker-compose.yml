@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  redis:
+    platform: linux/amd64
+    image: 'redis'
+    #command: sleep 3600
+    command: redis-server --requirepass airdb
+    volumes:
+      - ./:/srv/redis/
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PORT_NUMBER=6379
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_PASSWORD=airdb
+    container_name: redis

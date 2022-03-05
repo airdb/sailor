@@ -15,3 +15,7 @@ stopdb:
 
 bash:
 	sudo docker-compose -f dbutil/docker-compose.yml exec testdb bash
+
+redis:
+	docker-compose -f redisutil/docker-compose.yml up -d
+	go test -count=1 -v -test.short redisutil/redis_test.go -run TestNewRedisClient

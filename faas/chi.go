@@ -3,6 +3,7 @@ package faas
 import (
 	"context"
 	"net/http"
+	"path/filepath"
 
 	"github.com/airdb/sailor/deployutil"
 	"github.com/airdb/sailor/version"
@@ -19,7 +20,7 @@ func HandlerChi(ctx context.Context, req events.APIGatewayRequest) (events.APIGa
 	return ChiFaas.ProxyWithContext(ctx, req)
 }
 
-const defaultMainAddr = "0.0.0.0:8081"
+const defaultMainAddr = "0.0.0.0:8888"
 
 func RunTencentChi(r *chi.Mux) {
 	if deployutil.IsStageDev() {
@@ -35,22 +36,22 @@ func RunTencentChi(r *chi.Mux) {
 	faas.Start(HandlerChi)
 }
 
-func RunTencentChiWithSwagger(r *chi.Mux) {
+func RunTencentChiWithSwagger(r *chi.Mux, project string) {
+	path := filepath.Join("/", project)
+
+	// Return the default root index.
+	r.Get(path, HandleVersion)
+
+	path = filepath.Join("/", project, "/")
+	r.Get(path, HandleVersion)
+
+	path = filepath.Join("/", project, "/", "docs", "/")
+
 	fs := http.FileServer(http.Dir("docs"))
-	r.Handle("/chi/docs/*", http.StripPrefix("/chi/docs/", fs))
+	r.Handle(path+"*", http.StripPrefix(path, fs))
 	r.Handle("/docs/*", http.StripPrefix("/docs/", fs))
 
-	if deployutil.IsStageDev() {
-		err := http.ListenAndServe(defaultMainAddr, r)
-		if err != nil {
-			panic(err)
-		}
-
-		return
-	}
-
-	ChiFaas = chiadapter.New(r)
-	faas.Start(HandlerChi)
+	RunTencentChi(r)
 }
 
 // VersionHandler - Returns version information
@@ -62,6 +63,9 @@ func RunTencentChiWithSwagger(r *chi.Mux) {
 // @Success 200 {string} response "api response"
 // @Router / [get]
 func HandleVersion(w http.ResponseWriter, r *http.Request) {
-	render.JSON(w, r, version.GetBuildInfo())
+	info := version.GetBuildInfo()
+	info.Swagger = "docs/swagger.yaml"
+	render.JSON(w, r, info)
+
 	w.WriteHeader(http.StatusOK)
 }
