@@ -20,7 +20,7 @@ func HandlerChi(ctx context.Context, req events.APIGatewayRequest) (events.APIGa
 	return ChiFaas.ProxyWithContext(ctx, req)
 }
 
-const defaultMainAddr = "0.0.0.0:8081"
+const defaultMainAddr = "0.0.0.0:8888"
 
 func RunTencentChi(r *chi.Mux) {
 	if deployutil.IsStageDev() {
