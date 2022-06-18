@@ -1,5 +1,5 @@
 test:
-	docker compose up -d
+	docker compose up -d --remove-orphans
 	#go test -count=1 -v -test.short dbutil/dbutil_test.go  -run TestInitDB
 	go test -count=1 -v -covermode=count -coverprofile=coverage.out ./...
 	docker compose stop
