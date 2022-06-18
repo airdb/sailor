@@ -9,6 +9,11 @@ import (
 	"github.com/pkg/errors"
 )
 
+const (
+	IPVersion4 = 4
+	IPVersion6 = 6
+)
+
 // https://github.com/g0dsCookie/asn2ip
 // https://www.radb.net/query/help
 type Fetcher interface {
@@ -58,11 +63,13 @@ func readLine(conn net.Conn) (string, error) {
 // more command refer here, https://www.radb.net/query/help
 func fetch(conn net.Conn, as string, version int) ([]*net.IPNet, error) {
 	cmd := ""
-	if version == 4 {
+
+	switch version {
+	case IPVersion4:
 		cmd = fmt.Sprintf("!gAS%s\n", as)
-	} else if version == 6 {
+	case IPVersion6:
 		cmd = fmt.Sprintf("!6AS%s\n", as)
-	} else {
+	default:
 		return nil, errors.Errorf("unknown ip protocol version %d", version)
 	}
 
@@ -85,7 +92,7 @@ func fetch(conn net.Conn, as string, version int) ([]*net.IPNet, error) {
 		}
 
 		if state == "start" {
-			if len(line) <= 0 {
+			if len(line) == 0 {
 				return nil, errors.Errorf("empty response for as %s", as)
 			}
 			if line[0] != 'A' {
@@ -118,7 +125,11 @@ func (f *fetcher) Fetch(ipv4, ipv6 bool, asn ...string) (map[string]map[string][
 	}
 	defer func() {
 		// gracefully close socket
-		conn.Write([]byte("exit\n"))
+		_, err := conn.Write([]byte("exit\n"))
+		if err != nil {
+			panic(err) // TODO
+		}
+
 		conn.Close()
 	}()
 
@@ -130,14 +141,14 @@ func (f *fetcher) Fetch(ipv4, ipv6 bool, asn ...string) (map[string]map[string][
 	for _, v := range asn {
 		result[v] = map[string][]*net.IPNet{"ipv4": {}, "ipv6": {}}
 		if ipv4 {
-			net, err := fetch(conn, v, 4)
+			net, err := fetch(conn, v, IPVersion4)
 			if err != nil {
 				return nil, err
 			}
 			result[v]["ipv4"] = net
 		}
 		if ipv6 {
-			net, err := fetch(conn, v, 6)
+			net, err := fetch(conn, v, IPVersion6)
 			if err != nil {
 				return nil, err
 			}

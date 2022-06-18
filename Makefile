@@ -8,6 +8,10 @@ testall:
 	#go get github.com/smartystreets/goconvey
 	#goconvey
 
+lint:
+	go fmt ./...
+	golangci-lint run
+
 bash:
 	docker compose exec testdb bash
 

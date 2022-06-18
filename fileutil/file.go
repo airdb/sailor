@@ -47,15 +47,14 @@ func EnsureFileExists(path string) {
 	}
 }
 
-
 func ReadFile(path string) ([]byte, error) {
-        content, err := ioutil.ReadFile(path)
-        if err != nil {
+	content, err := ioutil.ReadFile(path)
+	if err != nil {
 		log.Fatal("read file fail, err: ", err)
-                return nil, err
-        }
+		return nil, err
+	}
 
-        return content, nil
+	return content, nil
 }
 
 func WriteFile(path string, content string) error {
