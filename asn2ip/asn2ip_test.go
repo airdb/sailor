@@ -13,6 +13,7 @@ func TestRun(t *testing.T) {
 	fetcher := asn2ip.NewFetcher("whois.radb.net", 43)
 
 	asnum := "AS15169"
+	asnum = "AS4134"
 	asnum = strings.Replace(asnum, "AS", "", -1)
 	ips, err := fetcher.Fetch(true, false, asnum)
 	if err != nil {
@@ -20,9 +21,5 @@ func TestRun(t *testing.T) {
 		return
 	}
 
-	for _, ipnet := range ips {
-		for _, ip := range ipnet["ipv4"] {
-			t.Log(ip)
-		}
-	}
+	t.Logf("AS number %s ipv4 count %d", asnum, len(ips))
 }

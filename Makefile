@@ -1,21 +1,16 @@
 test:
-	go test -v acs/client_test.go
+	docker compose up -d
+	#go test -count=1 -v -test.short dbutil/dbutil_test.go  -run TestInitDB
+	go test -count=1 -v -covermode=count -coverprofile=coverage.out ./...
+	docker compose stop
 
 testall:
-	#go test -count=1 -v -covermode=count -coverprofile=coverage.out ./...
 	#go get github.com/smartystreets/goconvey
-	goconvey
-
-db:
-	docker-compose -f dbutil/docker-compose.yml up -d
-	#go test -count=1 -v -test.short dbutil/dbutil_test.go  -run TestInitDB
-
-stopdb:
-	docker-compose -f dbutil/docker-compose.yml stop
+	#goconvey
 
 bash:
-	sudo docker-compose -f dbutil/docker-compose.yml exec testdb bash
+	docker compose exec testdb bash
 
 redis:
-	docker-compose -f redisutil/docker-compose.yml up -d
+	docker-compose up -d
 	go test -count=1 -v -test.short redisutil/redis_test.go -run TestNewRedisClient

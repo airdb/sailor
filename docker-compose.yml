@@ -2,10 +2,10 @@ version: '3'
 
 services:
   testdb:
-    image: 'mysql:5.7'
+    image: mariadb:10.5.8
     command: --init-file /srv/sql/init.sql
     volumes:
-      - ./:/srv/sql/
+      - ./dbuitl:/srv/sql/
     ports:
       - "3306:3306"
     environment:
@@ -15,3 +15,9 @@ services:
       - MYSQL_USER=airdb
       - MYSQL_PASSWORD=airdb
     container_name: testdb
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
