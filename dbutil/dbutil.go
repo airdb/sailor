@@ -21,15 +21,17 @@ var (
 )
 
 const (
-	SecondDatabaseWrite = "AIRDB_SECOND_DATABASE_WRITE"
-	SecondDatabaseRead  = "AIRDB_SECOND_DATABASE_READ"
-	MainDSNWrite        = "MAIN_DSN_WRITE"
-	MainDSNRead         = "MAIN_DSN_READ"
+	DSNMainWrite   = "DSN_MAIN_WRITE"
+	DSNMainRead    = "DSN_MAIN_READ"
+	DSNSecondWrite = "DSN_SECOND_WRITE"
+	DSNSecondRead  = "DSN_SECOND_READ"
 )
 
 var DefaultDBs = []string{
-	MainDSNWrite,
-	MainDSNRead,
+	DSNMainWrite,
+	DSNMainRead,
+	DSNSecondWrite,
+	DSNSecondRead,
 }
 
 func InitDefaultDB() {
@@ -45,9 +47,11 @@ func InitDB(dbNames []string) {
 	defer hasPend.Unlock()
 
 	for _, dbName := range dbNames {
-		conn := Connect(MainDSNWrite)
+		conn := Connect(dbName)
 
-		dbs.Store(dbName, conn)
+		if conn != nil {
+			dbs.Store(dbName, conn)
+		}
 	}
 
 	if atomic.LoadInt32(&hasInit) == 1 {
@@ -60,11 +64,11 @@ func InitDB(dbNames []string) {
 }
 
 func WriteDefaultDB() *gorm.DB {
-	return DB(MainDSNWrite)
+	return DB(DSNMainWrite)
 }
 
 func ReadDefaultDB() *gorm.DB {
-	return DB(MainDSNRead)
+	return DB(DSNMainRead)
 }
 
 func WriteDB(name string) *gorm.DB {
@@ -96,6 +100,10 @@ const (
 // Connection gets connection of mysql database
 func Connect(dbName string) (db *gorm.DB) {
 	dsn := os.Getenv(dbName)
+	if dsn == "" {
+		return nil
+	}
+
 	if !strings.Contains(dsn, "?") {
 		dsn += "?charset=utf8mb4&parseTime=True&loc=Local"
 	}
@@ -120,7 +128,7 @@ func Connect(dbName string) (db *gorm.DB) {
 		},
 	})
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
 
 	sqlDB, _ := db.DB()
