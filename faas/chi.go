@@ -2,7 +2,10 @@ package faas
 
 import (
 	"context"
+	"log"
+	"net"
 	"net/http"
+	"os"
 	"path/filepath"
 
 	"github.com/airdb/sailor/deployutil"
@@ -20,14 +23,34 @@ func HandlerChi(ctx context.Context, req events.APIGatewayRequest) (events.APIGa
 	return ChiFaas.ProxyWithContext(ctx, req)
 }
 
-const defaultMainAddr = "0.0.0.0:8888"
+const (
+	defaultHost = "0.0.0.0"
+	defaultPort = "8080"
+)
+
+func RunChi(r *chi.Mux) {
+	host := os.Getenv("HOST")
+	if host == "" {
+		host = defaultHost
+	}
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = defaultPort
+	}
+
+	defaultAddr := net.JoinHostPort(host, port)
+
+	//nolint:gosec
+	log.Fatal(http.ListenAndServe(defaultAddr, r))
+}
 
 func RunTencentChi(r *chi.Mux) {
 	if deployutil.IsStageDev() {
-		err := http.ListenAndServe(defaultMainAddr, r)
-		if err != nil {
-			panic(err)
-		}
+		defaultAddr := net.JoinHostPort(defaultHost, defaultPort)
+
+		//nolint:gosec
+		log.Fatal(http.ListenAndServe(defaultAddr, r))
 
 		return
 	}

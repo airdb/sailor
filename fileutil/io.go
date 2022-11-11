@@ -1,6 +1,6 @@
 package fileutil
 
-// nolint:gosec
+//nolint:gosec
 import (
 	"archive/tar"
 	"compress/gzip"
@@ -26,7 +26,7 @@ func IOWriteFile(r io.Reader, filePath string) error {
 }
 
 func GetMd5Sum(f io.Reader) string {
-	h := md5.New() // nolint:gosec
+	h := md5.New() //nolint:gosec
 	if _, err := io.Copy(h, f); err != nil {
 		log.Fatal(err)
 

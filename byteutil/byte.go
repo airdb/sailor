@@ -23,7 +23,7 @@ func BytesToString(b []byte) string {
 func StringToBytes(s string) (b []byte) {
 	bh := (*reflect.SliceHeader)(unsafe.Pointer(&b))
 
-	// nolint: govet
+	//nolint: govet
 	sh := *(*reflect.StringHeader)(unsafe.Pointer(&s))
 	bh.Data = sh.Data
 	bh.Len = sh.Len
