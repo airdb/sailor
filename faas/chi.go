@@ -41,6 +41,8 @@ func RunChi(r *chi.Mux) {
 
 	defaultAddr := net.JoinHostPort(host, port)
 
+	log.Println("listening on ", defaultAddr)
+
 	//nolint:gosec
 	log.Fatal(http.ListenAndServe(defaultAddr, r))
 }
@@ -48,6 +50,8 @@ func RunChi(r *chi.Mux) {
 func RunTencentChi(r *chi.Mux) {
 	if deployutil.IsStageDev() {
 		defaultAddr := net.JoinHostPort(defaultHost, defaultPort)
+
+		log.Println("listening on ", defaultAddr)
 
 		//nolint:gosec
 		log.Fatal(http.ListenAndServe(defaultAddr, r))
