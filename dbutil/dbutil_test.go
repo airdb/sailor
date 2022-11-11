@@ -12,14 +12,14 @@ func TestInitDB(t *testing.T) {
 		t.Skip("skipping testing in short mode")
 	}
 
-	os.Setenv("MAIN_DSN_WRITE", "root:root@tcp(127.0.0.1:3306)/test")
-	os.Setenv("MAIN_DSN_READ", "root:root@tcp(127.0.0.1:3306)/test")
+	os.Setenv("DSN_MAIN_WRITE", "airdb:airdb@tcp(127.0.0.1:3306)/test")
+	os.Setenv("DSN_MAIN_READ", "airdb:airdb@tcp(127.0.0.1:3306)/test")
 
 	dbutil.InitDefaultDB()
 	var users []string
 	// select * from information_schema.user_privileges;
 
-	db := dbutil.WriteDB(dbutil.MainDSNWrite).Table("information_schema.user_privileges").
+	db := dbutil.WriteDB(dbutil.DSNMainWrite).Table("information_schema.user_privileges").
 		Select("GRANTEE").Distinct("GRANTEE").Find(&users).Debug()
 	if db.Error != nil {
 		panic(db.Error)
